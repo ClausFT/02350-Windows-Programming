@@ -45,6 +45,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.4.4.32.7\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -70,10 +72,17 @@
     <Compile Include="View\ClassUserControl.xaml.cs">
       <DependentUpon>ClassUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EdgeUserControl.xaml.cs">
+      <DependentUpon>EdgeUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TopPanelUserControl.xaml.cs">
       <DependentUpon>TopPanelUserControl.xaml</DependentUpon>
     </Compile>
     <Page Include="View\ClassUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EdgeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
