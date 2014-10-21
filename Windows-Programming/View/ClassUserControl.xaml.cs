@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace Windows_Programming.View
 {
     /// <summary>
-    /// Interaction logic for ClassUserControl1.xaml
+    /// Interaction logic for ClassUserControl.xaml
     /// </summary>
     public partial class ClassUserControl : UserControl
     {
