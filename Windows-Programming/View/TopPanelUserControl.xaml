@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Windows_Programming.View.TopPanelUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="110" d:DesignWidth="600">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" />
+                    <MenuItem Header="_Open" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Undo" />
+                    <MenuItem Header="_Redo" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+
+        <DockPanel Margin="0,22,0,2">
+            <Grid Height="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="Add class" Command="" Width="100" Margin="10" />
+                <Button Grid.Column="1" Content="Association" Command="" Width="100" Height="30" />
+                <Button Grid.Column="2" Content="Inheritance" Command="" Width="100" Height="30" />
+                <Button Grid.Column="3" Content="Undo" Command="" Width="100" Height="30" />
+                <Button Grid.Column="4" Content="Redo" Command="" Width="100" Height="30" />
+            </Grid>
+
+
+            <DockPanel.Background>
+                <SolidColorBrush Color="Gray" />
+            </DockPanel.Background>
+        </DockPanel>
+    </Grid>
+</UserControl>
