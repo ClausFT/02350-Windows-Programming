@@ -7,17 +7,18 @@ using System.ComponentModel;
 
 namespace Windows_Programming.Model
 {
-    // Abstract base class. Bruges til at samle INotifyPropertyChanged funktionaliteten, så den ikke behøves implementeres i alle de almindelige model klasser.
-    // Formålet med INotifyPropertyChanged er at når en attribut for en klasse ændres, så smides en event der giver GUI'en besked om ændringen.
+    // This is an abstract base class that is used to define INotifyPropertyChanged functionality used by all Model classes, so they do not have to.
+    // The purpose of the INotifyPropertyChanged interface is to inform the View (GUI) that a property of a bound object has changed, so it can update the corresponding graphical representation.
     public abstract class NotifyBase : INotifyPropertyChanged
     {
-        // Her defineres den event der skal smides for at GUI'en ved at en attribut er blevet ændret.
+        // This is the event that is raised when the INotifyPropertyChanged interface is used to let the View (GUI) know that a property of a bound object has changed.
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Denne metode bruges til at smide PropertyChanged eventen og skal kaldes i alle set metoderne, for alle model klassernes attributer.
+        // This method is used by inheriting classes to raise the INotifyPropertyChanged event.
+        // It must be called in all set methods that change the state of model objects, to be sure that the view (GUI) is always updated, when data is changed behind the scenes.
         protected void NotifyPropertyChanged(String propertyName)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (propertyName != null && PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

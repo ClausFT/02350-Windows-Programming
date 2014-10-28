@@ -67,8 +67,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-	<Compile Include="Command\AddEdgeCommand.cs" />
-	<Compile Include="Command\AddNodeCommand.cs" />
+    <Compile Include="Command\AddLineCommand.cs" />
+    <Compile Include="Command\AddShapeCommand.cs" />
+    <Compile Include="Command\IUndoRedoCommand.cs" />
+    <Compile Include="Command\MoveShapeCommand.cs" />
+    <Compile Include="Command\RemoveLinesCommand.cs" />
+    <Compile Include="Command\RemoveShapesCommand.cs" />
+    <Compile Include="Command\UndoRedoController.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\ClassUserControl.xaml.cs">
@@ -133,7 +138,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Windows-Programming.Model\Windows-Programming.Model.csproj">
+      <Project>{a4701fbc-33ee-42df-94b9-066fe9c43dc4}</Project>
+      <Name>Windows-Programming.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
