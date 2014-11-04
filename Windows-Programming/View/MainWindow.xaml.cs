@@ -24,5 +24,10 @@ namespace Windows_Programming
         {
             InitializeComponent();
         }
+
+        private void TopPanelUserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
