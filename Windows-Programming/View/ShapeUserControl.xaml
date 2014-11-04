@@ -51,9 +51,17 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="13*"/>
             </Grid.RowDefinitions>
-            <TextBlock Opacity="1.0" FontSize="20" Text="{Binding Number}" Width="{Binding Width}" Height="auto" TextAlignment="Center" Foreground="LightBlue" Margin="0,10,0,11">
-                <!--De samme events som for den øverste ellipse er bundet til MainViewModel kommandoer her, sådan at hvis man trykker på tallet i midten så sker der også noget der.-->
-                <!--<i:Interaction.Triggers>
+            
+            <TextBlock Margin="20,20,0,0" Text=""/>
+            <TextBox x:Name="ReadWriteTB" Text="{Binding Name}" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="70" />
+
+            <!--<TextBlock Margin="auto" Text="Read Only TextBox" />
+            <TextBox x:Name="ReadOnlyTB" IsReadOnly="True" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="70" />-->
+
+            <!--<TextBlock x:Name="Class_name" Opacity="1.0" FontSize="18" Text="Class name" Width="{Binding Width}" Height="20" TextAlignment="Center" Foreground="Black" Margin="0,0,0,34.4" FontFamily="Source Sans Pro">
+                -->
+            <!--De samme events som for den øverste ellipse er bundet til MainViewModel kommandoer her, sådan at hvis man trykker på tallet i midten så sker der også noget der.-->
+            <!--<i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDown">
                         <cmd:EventToCommand Command="{Binding DataContext.MouseDownNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
                     </i:EventTrigger>
@@ -64,7 +72,9 @@
                         <cmd:EventToCommand Command="{Binding DataContext.MouseUpNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>-->
-            </TextBlock>
+            <!--
+            </TextBlock>-->
+
         </Grid>
     </Grid>
 </UserControl>

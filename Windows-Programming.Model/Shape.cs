@@ -15,6 +15,8 @@ namespace Windows_Programming.Model
         // The static integer counter field is used to set the integer Number property to a unique number for each Shape object.
         private static int counter = 0;
 
+        public String Name { get; set; }
+        
         // The Number integer property holds a unique integer for each Shape object to identify them in the View (GUI) layer.
         // The "{ get; set; }" syntax describes that a private field 
         //  and default getter setter methods should be generated 
