@@ -78,15 +78,16 @@ namespace Windows_Programming.ViewModel
                 //  and the following could be done:
                 // new Shape(30, 40, 80, 80);
 
-                new Shape() { X = 30, Y = 40, Width = 80, Height = 80 }, 
-                new Shape() { X = 140, Y = 230, Width = 100, Height = 100 } 
+                //new Shape() { X = 30, Y = 40, Width = 80, Height = 80 }, 
+                //new Shape() { X = 140, Y = 230, Width = 100, Height = 100 } 
             };
             // Here the list of Lines i filled with 1 Line that connects the 2 Shapes in the Shapes collection.
             // ElementAt() is an Extension Method, that like many others can be used on all types of collections.
             // It works just like the "Shapes[0]" syntax would be used for arrays.
-            Lines = new ObservableCollection<Line>() { 
-                new Line() { From = Shapes.ElementAt(0), To = Shapes.ElementAt(1) } 
-            };
+
+           // Lines = new ObservableCollection<Line>() { 
+           //     new Line() { From = Shapes.ElementAt(0), To = Shapes.ElementAt(1) } 
+           // };
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             // For these commands the methods are not part of the MainViewModel, but part of the UndoRedoController.

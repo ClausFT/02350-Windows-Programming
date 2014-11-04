@@ -63,7 +63,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="View\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -76,8 +76,8 @@
     <Compile Include="Command\UndoRedoController.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\ClassUserControl.xaml.cs">
-      <DependentUpon>ClassUserControl.xaml</DependentUpon>
+    <Compile Include="View\ShapeUserControl.xaml.cs">
+      <DependentUpon>ShapeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EdgeUserControl.xaml.cs">
       <DependentUpon>EdgeUserControl.xaml</DependentUpon>
@@ -85,7 +85,7 @@
     <Compile Include="View\TopPanelUserControl.xaml.cs">
       <DependentUpon>TopPanelUserControl.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\ClassUserControl.xaml">
+    <Page Include="View\ShapeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,7 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="View\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
