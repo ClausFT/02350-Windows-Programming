@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Windows_Programming.View
 {
     /// <summary>
-    /// Interaction logic for ClassUserControl.xaml
+    /// Interaction logic for ShapeUserControl.xaml
     /// </summary>
-    public partial class ClassUserControl : UserControl
+    public partial class ShapeUserControl : UserControl
     {
-        public ClassUserControl()
+        public ShapeUserControl()
         {
             InitializeComponent();
         }
