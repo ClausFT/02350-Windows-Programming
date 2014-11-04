@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Windows_Programming.View
 {
     /// <summary>
-    /// Interaction logic for EdgeUserControl.xaml
+    /// Interaction logic for LineUserControl.xaml
     /// </summary>
-    public partial class EdgeUserControl : UserControl
+    public partial class LineUserControl : UserControl
     {
-        public EdgeUserControl()
+        public LineUserControl()
         {
             InitializeComponent();
         }
