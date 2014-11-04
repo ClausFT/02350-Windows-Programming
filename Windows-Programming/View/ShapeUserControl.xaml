@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+             mc:Ignorable="d" 
              Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Width="{Binding Width}" Height="{Binding Height}" 
              d:DesignHeight="100" d:DesignWidth="100">
     <!--Denne grid bruges til at smide ting i oven på hinanden.-->
@@ -31,18 +31,29 @@
                 </RadialGradientBrush>
             </Rectangle.Fill>
 
-            <!--Her bliver de tre events MouseDown, MouseMove og MouseUp bundet til de tilsvarende kommandoer på MainViewModel.-->
-            <!--<i:Interaction.Triggers>
+            <!-- This uses the MVVMLight package to bind mouse events to commands on the MainViewModel. -->
+            <!-- More specifically it binds the three events MouseDown, MouseMove and MouseUp, -->
+            <!--  to the corresponding commands (MouseDownShapeCommand, MouseMoveShapeCommand and MouseUpShapeCommand) on the MainViewModel. -->
+            <!-- It also uses the Interactivity namespace from Blend (another XAML IDE for graphical designers), to make use of triggers, but you do not need to concern yourself with that. -->
+            <!-- The interesting thing about this Data Binding is that it uses RelativeSource to bind to another DataContext, -->
+            <!--  than that of the ShapeUserControl. -->
+            <!-- The RelativeSource finds the first parent element which is a Window, which is the MainWindow, -->
+            <!--  then it uses that DataContext to bind to the MainViewModels command properties, previously mentioned. -->
+            <!-- You can just reuse this code to bind events to commands, which is what most .NET developers do, -->
+            <!--  after finding this solution on StackOverflow.com or a similar site. -->
+            <!-- Another interesting thing is that a property called 'PassEventArgsToCommand' is set to true, -->
+            <!--  which makes MVVMLight pass the event parameters to the command. -->
+            <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDown">
-                    <cmd:EventToCommand Command="{Binding DataContext.MouseDownNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+                    <cmd:EventToCommand Command="{Binding DataContext.MouseDownShapeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
                 </i:EventTrigger>
                 <i:EventTrigger EventName="MouseMove">
-                    <cmd:EventToCommand Command="{Binding DataContext.MouseMoveNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+                    <cmd:EventToCommand Command="{Binding DataContext.MouseMoveShapeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
                 </i:EventTrigger>
                 <i:EventTrigger EventName="MouseUp">
-                    <cmd:EventToCommand Command="{Binding DataContext.MouseUpNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+                    <cmd:EventToCommand Command="{Binding DataContext.MouseUpShapeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
                 </i:EventTrigger>
-            </i:Interaction.Triggers>-->
+            </i:Interaction.Triggers>
         </Rectangle>
         <!--Det fjerde og øverste lag indholder punktets nummer, placeret i midten med TextAlignment og en grid.-->
         <Grid Width="{Binding Width}" Height="{Binding Height}">
@@ -54,26 +65,6 @@
             
             <TextBlock Margin="20,20,0,0" Text=""/>
             <TextBox x:Name="ReadWriteTB" Text="{Binding Name}" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="70" />
-
-            <!--<TextBlock Margin="auto" Text="Read Only TextBox" />
-            <TextBox x:Name="ReadOnlyTB" IsReadOnly="True" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="70" />-->
-
-            <!--<TextBlock x:Name="Class_name" Opacity="1.0" FontSize="18" Text="Class name" Width="{Binding Width}" Height="20" TextAlignment="Center" Foreground="Black" Margin="0,0,0,34.4" FontFamily="Source Sans Pro">
-                -->
-            <!--De samme events som for den øverste ellipse er bundet til MainViewModel kommandoer her, sådan at hvis man trykker på tallet i midten så sker der også noget der.-->
-            <!--<i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <cmd:EventToCommand Command="{Binding DataContext.MouseDownNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseMove">
-                        <cmd:EventToCommand Command="{Binding DataContext.MouseMoveNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseUp">
-                        <cmd:EventToCommand Command="{Binding DataContext.MouseUpNodeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>-->
-            <!--
-            </TextBlock>-->
 
         </Grid>
     </Grid>
