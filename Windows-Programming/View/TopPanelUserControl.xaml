@@ -33,7 +33,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Content="Add class" Command="{Binding AddShapeCommand}" Width="100" Margin="10" />
-                <Button Grid.Column="1" Content="Association" Command="" Width="100" Height="30" />
+                <Button Grid.Column="1" Content="Association" Command="{Binding AddLineCommand}" Width="100" Height="30" />
                 <Button Grid.Column="2" Content="Inheritance" Command="" Width="100" Height="30" />
                 <Button Grid.Column="3" Content="Undo" Command="{Binding UndoCommand}" Width="100" Height="30" />
                 <Button Grid.Column="4" Content="Redo" Command="{Binding RedoCommand}" Width="100" Height="30" />

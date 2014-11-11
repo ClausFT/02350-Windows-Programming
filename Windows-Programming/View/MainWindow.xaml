@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ViewModel="clr-namespace:Windows_Programming.ViewModel"
         xmlns:View="clr-namespace:Windows_Programming.View"
+        xmlns:shapes="clr-namespace:Windows_Programming.Model"
         Title="MainWindow" Height="600" Width="800">
     <!-- This is where you set the Data Context of the View (Window), which tells the WPF engine where to look for the properties used by the bindings. -->
     <!-- The namespace of the MainViewModel class has to be specified above, this is important to remember, to avoid a lot of problems in getting bindings to work. -->
