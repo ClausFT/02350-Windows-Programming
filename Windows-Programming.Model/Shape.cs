@@ -10,8 +10,6 @@ namespace Windows_Programming.Model
     // The Shape class descripes a shape with a position (X and Y), and a size (Width and Height).
     public class Shape : NotifyBase
     {
-        // Properties.
-        // For a description of the Getter/Setter Property syntax ("{ get { ... } set { ... } }") see the Line class.
         // The static integer counter field is used to set the integer Number property to a unique number for each Shape object.
         private static int counter = 0;
 
@@ -23,70 +21,23 @@ namespace Windows_Programming.Model
         public int Number { get; private set; }
 
         private int x;
-        public int X { get { return x; } set { x = value; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); } }
-        // This corresponds to the following in Java (can also be done like this in .NET):
+        public int X { get { return x; } set { x = value; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); NotifyPropertyChanged("FromRightX"); } }
 
-        // private Shape x;
-        // 
-        // public Shape getX(){
-        //   return x;
-        // }
-        //
-        // public void setX(Shape value){
-        //   x = value;
-        //   NotifyPropertyChanged("X");
-        //   NotifyPropertyChanged("CanvasCenterX");
-        // }
 
         private int y;
         public int Y { get { return y; } set { y = value; NotifyPropertyChanged("Y"); NotifyPropertyChanged("CanvasCenterY"); } }
-        // This corresponds to the following in Java (can also be done like this in .NET):
 
-        // private Shape y;
-        // 
-        // public Shape getY(){
-        //   return y;
-        // }
-        //
-        // public void setY(Shape value){
-        //   y = value;
-        //   NotifyPropertyChanged("Y");
-        //   NotifyPropertyChanged("CanvasCenterY");
-        // }
 
         private int width;
         public int Width { get { return width; } set { width = value; NotifyPropertyChanged("Width"); NotifyPropertyChanged("CanvasCenterX"); NotifyPropertyChanged("CenterX"); } }
-        // This corresponds to the following in Java (can also be done like this in .NET):
 
-        // private Shape width;
-        // 
-        // public Shape getWidth(){
-        //   return width;
-        // }
-        //
-        // public void setWidth(Shape value){
-        //   width = value;
-        //   NotifyPropertyChanged("Width");
-        //   NotifyPropertyChanged("CanvasCenterX");
-        //   NotifyPropertyChanged("CenterX");
-        // }
 
         private int height;
         public int Height { get { return height; } set { height = value; NotifyPropertyChanged("Height"); NotifyPropertyChanged("CanvasCenterY"); NotifyPropertyChanged("CenterY"); } }
-        // This corresponds to the following in Java (can also be done like this in .NET):
 
-        // private Shape height;
-        // 
-        // public Shape getHeight(){
-        //   return height;
-        // }
-        //
-        // public void setHeight(Shape value){
-        //   height = value;
-        //   NotifyPropertyChanged("Height");
-        //   NotifyPropertyChanged("CanvasCenterY");
-        //   NotifyPropertyChanged("CenterY");
-        // }
+
+        public int FromRightX { get { return X + Width; } }
+        public int FromRightY { get { return CanvasCenterY; } }
 
         // Derived properties.
         // Corresponds to making a Getter method in Java (for instance 'public int GetCenterX()'), 
@@ -97,6 +48,7 @@ namespace Windows_Programming.Model
         //        but in this demo we need both these and derived properties for the coordinates of the Shape, 
         //        relative to the upper left corner of the Shape. This is an example of a breaking change, 
         //        that is changed during the lifetime of an application, because the requirements change.
+
         public int CanvasCenterX { get { return X + Width / 2; } set { X = value - Width / 2; NotifyPropertyChanged("X"); } }
         public int CanvasCenterY { get { return Y + Height / 2; } set { Y = value - Height / 2; NotifyPropertyChanged("Y"); } }
         // The CenterX and CenterY properties are used by the Shape animation to define the point of rotation.
@@ -104,18 +56,7 @@ namespace Windows_Programming.Model
         //        from the 02350SuperSimpleDemo, see above for an explanation.
 
         public int CenterX { get { return Width / 2; } }
-        // This corresponds to the following in Java (can also be done like this in .NET):
-
-        // public int getCenterX(){
-        //   return X + Width / 2;
-        // }
-
         public int CenterY { get { return Height / 2; } }
-        // This corresponds to the following in Java (can also be done like this in .NET):
-
-        // public int getCenterY(){
-        //   return Y + Height / 2;
-        // }
 
         // ViewModel properties.
         // These properties should be in the ViewModel layer, but it is easier for the demo to put them here, 

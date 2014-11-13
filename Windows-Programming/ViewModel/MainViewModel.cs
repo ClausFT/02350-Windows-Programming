@@ -174,6 +174,10 @@ namespace Windows_Programming.ViewModel
                 // The View (GUI) is then notified by the Shape, that its properties have changed.
                 shapeModel.CanvasCenterX = (int)mousePosition.X;
                 shapeModel.CanvasCenterY = (int)mousePosition.Y;
+
+                foreach (Line element in Lines)
+                    element.FindShortestLine();
+                    
             }
         }
 
@@ -199,9 +203,13 @@ namespace Windows_Programming.ViewModel
                 //  it is checked that the first and second Shape are different.
                 else if (addingLineFrom.Number != shape.Number)
                 {
+
+                    
                     // Now that it has been established that the Line adding operation has been completed succesfully by the user, 
                     //  a Line is added using an 'AddLineCommand', with a new Line given between the two shapes chosen.
-                    undoRedoController.AddAndExecute(new AddLineCommand(Lines, new Line() { From = addingLineFrom, To = shape }));
+                    Line line = new Line() { From = addingLineFrom, To = shape };
+                    undoRedoController.AddAndExecute(new AddLineCommand(Lines, line));
+                    line.FindShortestLine();
                     // The property used for visually indicating that a Line is being Drawn is cleared, 
                     //  so the View can return to its original and default apperance.
                     addingLineFrom.IsSelected = false;
