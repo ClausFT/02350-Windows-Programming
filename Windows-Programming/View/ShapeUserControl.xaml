@@ -23,7 +23,15 @@
             <TextBlock Grid.Row="3" Text="med klik" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
         </Grid>
         <!--Tredje lag er den øverste ellipse med animation og gradient.-->
-        <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+        <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" RenderTransformOrigin="1,1">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="1" Y="1"/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
             <!--Baggrundsfarven der er en gradient.-->
             <Rectangle.Fill>
                 <RadialGradientBrush>
@@ -62,10 +70,10 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="13*"/>
             </Grid.RowDefinitions>
-            
-            <TextBlock Margin="20,20,0,0" Text=""/>
-            <TextBox x:Name="ReadWriteTB" Text="{Binding Name}" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="70" />
 
+            <TextBlock Margin="20,20,0,0" Text=""/>
+            <TextBox x:Name="ReadWriteTB" Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Left" Margin="20,0,0,10" Height="35" Width="70" Background="LightBlue"/>
+            
         </Grid>
     </Grid>
 </UserControl>

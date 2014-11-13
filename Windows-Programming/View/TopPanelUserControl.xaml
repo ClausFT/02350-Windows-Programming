@@ -16,8 +16,8 @@
                     <MenuItem Header="_Exit" />
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="_Undo" />
-                    <MenuItem Header="_Redo" />
+                    <MenuItem Header="_Undo" Command="{Binding UndoCommand}" />
+                    <MenuItem Header="_Redo" Command="{Binding RedoCommand}" />
                 </MenuItem>
             </Menu>
             <TextBox AcceptsReturn="True" />
