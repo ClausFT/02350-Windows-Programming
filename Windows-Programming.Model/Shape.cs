@@ -21,7 +21,7 @@ namespace Windows_Programming.Model
         public int Number { get; private set; }
 
         private int x;
-        public int X { get { return x; } set { x = value; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); NotifyPropertyChanged("FromRightX"); } }
+        public int X { get { return x; } set { x = value; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); } }
 
 
         private int y;
@@ -34,10 +34,6 @@ namespace Windows_Programming.Model
 
         private int height;
         public int Height { get { return height; } set { height = value; NotifyPropertyChanged("Height"); NotifyPropertyChanged("CanvasCenterY"); NotifyPropertyChanged("CenterY"); } }
-
-
-        public int FromRightX { get { return X + Width; } }
-        public int FromRightY { get { return CanvasCenterY; } }
 
         // Derived properties.
         // Corresponds to making a Getter method in Java (for instance 'public int GetCenterX()'), 

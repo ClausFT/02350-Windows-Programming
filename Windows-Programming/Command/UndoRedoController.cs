@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows_Programming.ViewModel;
 
 namespace Windows_Programming.Command
 {
@@ -56,6 +57,9 @@ namespace Windows_Programming.Command
             IUndoRedoCommand command = undoStack.Pop();
             redoStack.Push(command);
             command.UnExecute();
+
+            foreach (Line element in MainViewModel.Lines)
+                element.FindShortestLine();
         }
 
         // This informs the View (GUI) when the Redo command can be used.
@@ -75,6 +79,9 @@ namespace Windows_Programming.Command
             IUndoRedoCommand command = redoStack.Pop();
             undoStack.Push(command);
             command.Execute();
+
+            foreach (Line element in MainViewModel.Lines)
+                element.FindShortestLine();
         }
     }
 }

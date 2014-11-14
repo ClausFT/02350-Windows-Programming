@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Input;
-using System.Windows.Controls;
 using System.Windows.Shapes;
 
 namespace Windows_Programming.Model
@@ -42,16 +36,16 @@ namespace Windows_Programming.Model
         // Sets the coordinates to the shortest line between the two shapes
         public void FindShortestLine()
         {
-            // Array containing coordinates for the four possible line
+            // Array containing coordinates for the four possible lines
             // coord[i, k] = {x1, y1, x2, y2}
-            int[,] coord = new int[,] { { From.CanvasCenterX, From.Y + From.Height, To.CanvasCenterX, To.Y }, //top-bottom
-                                        { To.CanvasCenterX, To.Y + To.Height, From.CanvasCenterX, From.Y },   //bottom-top
-                                        { From.X + From.Width, From.CanvasCenterY, To.X, To.CanvasCenterY },  //left-right
-                                        { To.X + To.Width, To.CanvasCenterY, From.X, From.CanvasCenterY } };  //right-left
+            int[,] coord = { { From.CanvasCenterX, From.Y + From.Height, To.CanvasCenterX, To.Y }, //top-bottom
+                             { To.CanvasCenterX, To.Y + To.Height, From.CanvasCenterX, From.Y },   //bottom-top
+                             { From.X + From.Width, From.CanvasCenterY, To.X, To.CanvasCenterY },  //left-right
+                             { To.X + To.Width, To.CanvasCenterY, From.X, From.CanvasCenterY } };  //right-left
 
             int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
             double minLength = -1;
-            for(int i = 0; i < 4; i++) //For each set coordinat
+            for (int i = 0; i < coord.Length/4; i++) //For each set coordinat
             { 
                 //Calculate the length of the line
                 double lineLength = LineLength(coord[i, 0], coord[i, 1], coord[i, 2], coord[i, 3]); 
@@ -64,7 +58,7 @@ namespace Windows_Programming.Model
                     y1 = coord[i, 1];
                     x2 = coord[i, 2];
                     y2 = coord[i, 3];
-                }
+                }  
             }
 
             //Set coordinates

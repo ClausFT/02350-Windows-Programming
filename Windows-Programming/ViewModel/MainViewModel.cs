@@ -44,7 +44,7 @@ namespace Windows_Programming.ViewModel
         // Also the collection is generic ("<Type>"), which means that it can be defined to hold all kinds of objects (and primitives), 
         //  but at runtime it is optimized for the specific type and can only hold that type.
         public ObservableCollection<Shape> Shapes { get; set; }
-        public ObservableCollection<Line> Lines { get; set; }
+        public static ObservableCollection<Line> Lines { get; set; }
 
         // Commands that the UI can be bound to.
         public ICommand UndoCommand { get; private set; }
