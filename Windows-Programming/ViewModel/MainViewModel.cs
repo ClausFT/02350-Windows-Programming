@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Windows_Programming.Model;
 using Windows_Programming;
 using GalaSoft.MvvmLight;
@@ -22,8 +23,26 @@ namespace Windows_Programming.ViewModel
     /// <summary>
     /// This ViewModel is bound to the MainWindow View.
     /// </summary>
+
+    //public class HelloWorldCommand : ICommand
+    //{
+    //    public string Type { get; set; }
+    //    public void Execute(object parameter)
+    //    {
+    //        Type = (string) parameter;
+    //        Debug.WriteLine(parameter);
+    //    }
+
+    //    public bool CanExecute(object parameter)
+    //    {
+    //        return true;
+    //    }
+    //    public event EventHandler CanExecuteChanged;
+    //}
+
     public class MainViewModel : ViewModelBase
     {
+        public Relation.Relations Type { get; set; }
         // A reference to the Undo/Redo controller.
         private UndoRedoController undoRedoController = UndoRedoController.GetInstance();
 
@@ -52,9 +71,14 @@ namespace Windows_Programming.ViewModel
 
         // Commands that the UI can be bound to.
         public ICommand AddShapeCommand { get; private set; }
+        //public ICommand AddLineCommand { get; private set; }
         public ICommand RemoveShapeCommand { get; private set; }
-        public ICommand AddLineCommand { get; private set; }
         public ICommand RemoveLinesCommand { get; private set; }
+
+        public ICommand AddAssociationCommand { get; private set; }
+        public ICommand AddInheritanceCommand { get; private set; }
+
+        //public ICommand AddLineCommand { get; private set; }
 
         // Commands that the UI can be bound to.
         public ICommand MouseDownShapeCommand { get; private set; }
@@ -96,8 +120,11 @@ namespace Windows_Programming.ViewModel
             // The commands are given the methods they should use to execute, and find out if they can execute.
             AddShapeCommand = new RelayCommand(AddShape);
             RemoveShapeCommand = new RelayCommand<IList>(RemoveShape, CanRemoveShape);
-            AddLineCommand = new RelayCommand(AddLine);
+            //AddLineCommand = new RelayCommand(AddLine);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
+
+            AddAssociationCommand = new RelayCommand(AddAssociation);
+            AddInheritanceCommand = new RelayCommand(AddInheritance);
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             MouseDownShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseDownShape);
@@ -125,8 +152,22 @@ namespace Windows_Programming.ViewModel
 
         // Starts the procedure to remove a Line, by changing the mode to 'isAddingLine', 
         //  and making the shapes transparent.
-        public void AddLine()
+        //public void AddLine()
+        //{
+        //    isAddingLine = true;
+        //    RaisePropertyChanged("ModeOpacity");
+        //}
+
+        public void AddAssociation()
         {
+            Type = Relation.Relations.Association;
+            isAddingLine = true;
+            RaisePropertyChanged("ModeOpacity");
+        }
+
+        public void AddInheritance()
+        {
+            Type = Relation.Relations.Inheritance;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
         }
@@ -176,7 +217,7 @@ namespace Windows_Programming.ViewModel
                 shapeModel.CanvasCenterY = (int)mousePosition.Y;
 
                 foreach (Line element in Lines)
-                    element.FindShortestLine();
+                    element.SetShortestLine();
                     
             }
         }
@@ -203,13 +244,12 @@ namespace Windows_Programming.ViewModel
                 //  it is checked that the first and second Shape are different.
                 else if (addingLineFrom.Number != shape.Number)
                 {
-
                     
                     // Now that it has been established that the Line adding operation has been completed succesfully by the user, 
                     //  a Line is added using an 'AddLineCommand', with a new Line given between the two shapes chosen.
-                    Line line = new Line() { From = addingLineFrom, To = shape };
+                    Line line = new Line() { From = addingLineFrom, To = shape, Type = Type};
                     undoRedoController.AddAndExecute(new AddLineCommand(Lines, line));
-                    line.FindShortestLine();
+                    line.SetShortestLine();
                     // The property used for visually indicating that a Line is being Drawn is cleared, 
                     //  so the View can return to its original and default apperance.
                     addingLineFrom.IsSelected = false;

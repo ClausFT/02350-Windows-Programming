@@ -10,7 +10,5 @@
     <!-- The important thing to understand is that the DataContext of this UserControl is a 'Line' object, -->
     <!--  from the MainViewModels 'Lines' collection because this 'UserControl' is used by the ItemsCollection in the MainWindow, -->
     <!--  and that ItemsCollection is bound to the MainViewModels 'Lines' collection. -->
-    <!--<shapes:Arrow X1="{Binding From.CanvasCenterX}" Y1="{Binding From.Y}" X2="{Binding To.CanvasCenterX}" Y2="{Binding To.Y}" HeadWidth="10" HeadHeight="5" Stroke="Black" StrokeThickness="1.0" />-->
-    <Line X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Stroke="Black" StrokeThickness="1"/>
-
+    <shapes:Relation X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Type="{Binding Type}" HeadWidth="10" HeadHeight="5" Stroke="Black" StrokeThickness="1"/>
 </UserControl>

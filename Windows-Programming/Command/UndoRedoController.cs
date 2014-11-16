@@ -59,7 +59,7 @@ namespace Windows_Programming.Command
             command.UnExecute();
 
             foreach (Line element in MainViewModel.Lines)
-                element.FindShortestLine();
+                element.SetShortestLine();
         }
 
         // This informs the View (GUI) when the Redo command can be used.
@@ -81,7 +81,7 @@ namespace Windows_Programming.Command
             command.Execute();
 
             foreach (Line element in MainViewModel.Lines)
-                element.FindShortestLine();
+                element.SetShortestLine();
         }
     }
 }
