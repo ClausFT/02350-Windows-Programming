@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using Windows_Programming.Model;
 using Windows_Programming;
+using Windows_Programming.Model.Enums;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -22,8 +24,26 @@ namespace Windows_Programming.ViewModel
     /// <summary>
     /// This ViewModel is bound to the MainWindow View.
     /// </summary>
+
+    //public class HelloWorldCommand : ICommand
+    //{
+    //    public string Type { get; set; }
+    //    public void Execute(object parameter)
+    //    {
+    //        Type = (string) parameter;
+    //        Debug.WriteLine(parameter);
+    //    }
+
+    //    public bool CanExecute(object parameter)
+    //    {
+    //        return true;
+    //    }
+    //    public event EventHandler CanExecuteChanged;
+    //}
+
     public class MainViewModel : ViewModelBase
     {
+        private RelationTypes Type { get; set; }
         // A reference to the Undo/Redo controller.
         private UndoRedoController undoRedoController = UndoRedoController.GetInstance();
 
@@ -44,7 +64,7 @@ namespace Windows_Programming.ViewModel
         // Also the collection is generic ("<Type>"), which means that it can be defined to hold all kinds of objects (and primitives), 
         //  but at runtime it is optimized for the specific type and can only hold that type.
         public ObservableCollection<Shape> Shapes { get; set; }
-        public ObservableCollection<Line> Lines { get; set; }
+        public static ObservableCollection<Line> Lines { get; set; }
 
         // Commands that the UI can be bound to.
         public ICommand UndoCommand { get; private set; }
@@ -53,8 +73,15 @@ namespace Windows_Programming.ViewModel
         // Commands that the UI can be bound to.
         public ICommand AddShapeCommand { get; private set; }
         public ICommand RemoveShapeCommand { get; private set; }
-        public ICommand AddLineCommand { get; private set; }
         public ICommand RemoveLinesCommand { get; private set; }
+
+        public ICommand AddAssociationCommand { get; private set; }
+        public ICommand AddInheritanceCommand { get; private set; }
+        public ICommand AddAggregationCommand { get; private set; }
+        public ICommand AddCompositionCommand { get; private set; }
+        
+
+        //public ICommand AddLineCommand { get; private set; }
 
         // Commands that the UI can be bound to.
         public ICommand MouseDownShapeCommand { get; private set; }
@@ -96,8 +123,12 @@ namespace Windows_Programming.ViewModel
             // The commands are given the methods they should use to execute, and find out if they can execute.
             AddShapeCommand = new RelayCommand(AddShape);
             RemoveShapeCommand = new RelayCommand<IList>(RemoveShape, CanRemoveShape);
-            AddLineCommand = new RelayCommand(AddLine);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
+
+            AddAssociationCommand = new RelayCommand(AddAssociation, CanAddLine);
+            AddInheritanceCommand = new RelayCommand(AddInheritance, CanAddLine);
+            AddAggregationCommand = new RelayCommand(AddAggregation, CanAddLine);
+            AddCompositionCommand = new RelayCommand(AddComposition, CanAddLine);
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             MouseDownShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseDownShape);
@@ -117,6 +148,11 @@ namespace Windows_Programming.ViewModel
             return _shapes.Count == 1;
         }
 
+        public bool CanAddLine()
+        {
+            return Shapes.Count > 1;
+        }
+
         // Removes the chosen Shapes with a RemoveShapesCommand.
         public void RemoveShape(IList _shapes)
         {
@@ -125,8 +161,36 @@ namespace Windows_Programming.ViewModel
 
         // Starts the procedure to remove a Line, by changing the mode to 'isAddingLine', 
         //  and making the shapes transparent.
-        public void AddLine()
+        //public void AddLine()
+        //{
+        //    isAddingLine = true;
+        //    RaisePropertyChanged("ModeOpacity");
+        //}
+
+        public void AddAssociation()
         {
+            Type = RelationTypes.Association;
+            isAddingLine = true;
+            RaisePropertyChanged("ModeOpacity");
+        }
+
+        public void AddInheritance()
+        {
+            Type = RelationTypes.Inheritance;
+            isAddingLine = true;
+            RaisePropertyChanged("ModeOpacity");
+        }
+
+        public void AddAggregation()
+        {
+            Type = RelationTypes.Aggregation;
+            isAddingLine = true;
+            RaisePropertyChanged("ModeOpacity");
+        }
+
+        public void AddComposition()
+        {
+            Type = RelationTypes.Composition;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
         }
@@ -174,6 +238,10 @@ namespace Windows_Programming.ViewModel
                 // The View (GUI) is then notified by the Shape, that its properties have changed.
                 shapeModel.CanvasCenterX = (int)mousePosition.X;
                 shapeModel.CanvasCenterY = (int)mousePosition.Y;
+
+                foreach (Line element in Lines)
+                    element.SetShortestLine();
+                    
             }
         }
 
@@ -199,9 +267,12 @@ namespace Windows_Programming.ViewModel
                 //  it is checked that the first and second Shape are different.
                 else if (addingLineFrom.Number != shape.Number)
                 {
+                    
                     // Now that it has been established that the Line adding operation has been completed succesfully by the user, 
                     //  a Line is added using an 'AddLineCommand', with a new Line given between the two shapes chosen.
-                    undoRedoController.AddAndExecute(new AddLineCommand(Lines, new Line() { From = addingLineFrom, To = shape }));
+                    Line line = new Line() { From = addingLineFrom, To = shape, Type = Type};
+                    undoRedoController.AddAndExecute(new AddLineCommand(Lines, line));
+                    line.SetShortestLine();
                     // The property used for visually indicating that a Line is being Drawn is cleared, 
                     //  so the View can return to its original and default apperance.
                     addingLineFrom.IsSelected = false;

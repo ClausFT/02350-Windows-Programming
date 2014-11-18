@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Input;
 using Windows_Programming.Model;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Windows_Programming.ViewModel;
 
 namespace Windows_Programming.Command
 {
@@ -14,7 +17,6 @@ namespace Windows_Programming.Command
         // Fields.
         // The 'lines' field holds the current collection of lines, 
         //  and the reference points to the same collection as the one the MainViewModel point to, 
-        //  therefore when this collection is changed in a object of this class, 
         //  it also changes the collection that the MainViewModel uses.
         // For a description of an ObservableCollection see the MainViewModel class.
         private ObservableCollection<Line> lines;
