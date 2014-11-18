@@ -56,23 +56,29 @@
             </i:Interaction.Triggers>
         </Rectangle>
         <!--Det fjerde og øverste lag indholder punktets nummer, placeret i midten med TextAlignment og en grid.-->
-        <Grid Width="{Binding Width}" Height="{Binding Height}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Expander Grid.Row="1" Header="Add" ExpandDirection="Right" IsExpanded="False"
+            
+            <Expander Grid.Row="2" Header="Add" ExpandDirection="Right" IsExpanded="False"
                       BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Left">
                  <TextBox Text="Add Function" BorderThickness="2" BorderBrush="Black" />
             </Expander>
-            <TextBox Grid.Row="0" x:Name="ReadWriteTB" Width="140" Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderThickness="2" BorderBrush="Black">
-                
-                
-                <!-- <Line HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Stroke="Black" />
-              -->
-                
+            <TextBox Grid.Row="0" x:Name="ReadWriteTB" Width="140" Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderThickness="0.2" BorderBrush="Black">
+               
             </TextBox>
+            <Rectangle Height="2" Grid.Row="1" Width="140" Fill="Red" Margin="0, 1" />
+            <Rectangle Height="2" Grid.Row="3" Width="140" Fill="Red" Margin="0, 1" />
+
+            <Expander Grid.Row="4" Header="Add" ExpandDirection="Right" IsExpanded="False"
+                      BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Left">
+                <TextBox Text="Add Function" BorderBrush="Black" BorderThickness="2" />
+            </Expander>
 
         </Grid>
     </Grid>
