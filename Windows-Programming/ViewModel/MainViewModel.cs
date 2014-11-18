@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Windows_Programming.Model;
 using Windows_Programming;
+using Windows_Programming.Model.Enums;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -42,7 +43,7 @@ namespace Windows_Programming.ViewModel
 
     public class MainViewModel : ViewModelBase
     {
-        public Relation.Relations Type { get; set; }
+        private RelationTypes Type { get; set; }
         // A reference to the Undo/Redo controller.
         private UndoRedoController undoRedoController = UndoRedoController.GetInstance();
 
@@ -71,12 +72,14 @@ namespace Windows_Programming.ViewModel
 
         // Commands that the UI can be bound to.
         public ICommand AddShapeCommand { get; private set; }
-        //public ICommand AddLineCommand { get; private set; }
         public ICommand RemoveShapeCommand { get; private set; }
         public ICommand RemoveLinesCommand { get; private set; }
 
         public ICommand AddAssociationCommand { get; private set; }
         public ICommand AddInheritanceCommand { get; private set; }
+        public ICommand AddAggregationCommand { get; private set; }
+        public ICommand AddCompositionCommand { get; private set; }
+        
 
         //public ICommand AddLineCommand { get; private set; }
 
@@ -120,11 +123,12 @@ namespace Windows_Programming.ViewModel
             // The commands are given the methods they should use to execute, and find out if they can execute.
             AddShapeCommand = new RelayCommand(AddShape);
             RemoveShapeCommand = new RelayCommand<IList>(RemoveShape, CanRemoveShape);
-            //AddLineCommand = new RelayCommand(AddLine);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
 
-            AddAssociationCommand = new RelayCommand(AddAssociation);
-            AddInheritanceCommand = new RelayCommand(AddInheritance);
+            AddAssociationCommand = new RelayCommand(AddAssociation, CanAddLine);
+            AddInheritanceCommand = new RelayCommand(AddInheritance, CanAddLine);
+            AddAggregationCommand = new RelayCommand(AddAggregation, CanAddLine);
+            AddCompositionCommand = new RelayCommand(AddComposition, CanAddLine);
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             MouseDownShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseDownShape);
@@ -144,6 +148,11 @@ namespace Windows_Programming.ViewModel
             return _shapes.Count == 1;
         }
 
+        public bool CanAddLine()
+        {
+            return Shapes.Count > 1;
+        }
+
         // Removes the chosen Shapes with a RemoveShapesCommand.
         public void RemoveShape(IList _shapes)
         {
@@ -160,14 +169,28 @@ namespace Windows_Programming.ViewModel
 
         public void AddAssociation()
         {
-            Type = Relation.Relations.Association;
+            Type = RelationTypes.Association;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
         }
 
         public void AddInheritance()
         {
-            Type = Relation.Relations.Inheritance;
+            Type = RelationTypes.Inheritance;
+            isAddingLine = true;
+            RaisePropertyChanged("ModeOpacity");
+        }
+
+        public void AddAggregation()
+        {
+            Type = RelationTypes.Aggregation;
+            isAddingLine = true;
+            RaisePropertyChanged("ModeOpacity");
+        }
+
+        public void AddComposition()
+        {
+            Type = RelationTypes.Composition;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
         }

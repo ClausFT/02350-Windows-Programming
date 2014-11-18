@@ -5,27 +5,18 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using Windows_Programming.Model.Enums;
+using Windows_Programming.Model.Utils;
 
 namespace Windows_Programming.Model
 {
     public class Relation : System.Windows.Shapes.Shape
     {
-
-        public enum Relations
-        {
-            Association,
-            Inheritance,
-            Aggregation,
-            Composition
-        };
-
         public static readonly DependencyProperty X1Property = DependencyProperty.Register("X1", typeof(double), typeof(Relation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
         public static readonly DependencyProperty Y1Property = DependencyProperty.Register("Y1", typeof(double), typeof(Relation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
         public static readonly DependencyProperty X2Property = DependencyProperty.Register("X2", typeof(double), typeof(Relation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
         public static readonly DependencyProperty Y2Property = DependencyProperty.Register("Y2", typeof(double), typeof(Relation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-        public static readonly DependencyProperty HeadWidthProperty = DependencyProperty.Register("HeadWidth", typeof(double), typeof(Relation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-        public static readonly DependencyProperty HeadHeightProperty = DependencyProperty.Register("HeadHeight", typeof(double), typeof(Relation), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register("Type", typeof(Relations), typeof(Relation));
+        public static readonly DependencyProperty TypeProperty = DependencyProperty.Register("Type", typeof(RelationTypes), typeof(Relation));
 
         [TypeConverter(typeof(LengthConverter))]
         public double X1
@@ -55,28 +46,14 @@ namespace Windows_Programming.Model
             set { base.SetValue(Y2Property, value); }
         }
 
-        [TypeConverter(typeof(LengthConverter))]
-        public double HeadWidth
+        [TypeConverter(typeof(RelationTypes))]
+        public RelationTypes Type
         {
-            get { return (double)base.GetValue(HeadWidthProperty); }
-            set { base.SetValue(HeadWidthProperty, value); }
-        }
-
-        [TypeConverter(typeof(LengthConverter))]
-        public double HeadHeight
-        {
-            get { return (double)base.GetValue(HeadHeightProperty); }
-            set { base.SetValue(HeadHeightProperty, value); }
-        }
-
-        [TypeConverter(typeof(Relations))]
-        public Relations Type
-        {
-            get { return (Relations)base.GetValue(TypeProperty); }
+            get { return (RelationTypes)base.GetValue(TypeProperty); }
             set { base.SetValue(TypeProperty, value); }
         }
 
-        
+
         protected override Geometry DefiningGeometry
         {
             get
@@ -99,52 +76,25 @@ namespace Windows_Programming.Model
 
         private void InternalDrawArrowGeometry(StreamGeometryContext context)
         {
-            double theta = Math.Atan2(Y1 - Y2, X1 - X2);
-            double sint = Math.Sin(theta);
-            double cost = Math.Cos(theta);
-
-            Point pt1 = new Point(X1, this.Y1);
-            Point pt2 = new Point(X2, this.Y2);
-            Point pt3 = new Point(
-                    X2 + (HeadWidth * cost - HeadHeight * sint),
-                    Y2 + (HeadWidth * sint + HeadHeight * cost));
-            Point pt4 = new Point(
-                    X2 + (HeadWidth * cost + HeadHeight * sint),
-                    Y2 - (HeadHeight * cost - HeadWidth * sint));
-
             switch (Type)
             {
-                case Relations.Association:
-                    context.BeginFigure(pt1, true, false);
-                    context.LineTo(pt2, true, true);
-                    context.LineTo(pt3, true, true);
-                    context.LineTo(pt2, true, true);
-                    context.LineTo(pt4, true, true);
+                case RelationTypes.Association:
+                    LineHeads.Association(context, X1, Y1, X2, Y2);
                     break;
 
-                case Relations.Inheritance:
-                    Point pt5 = MidPoint(pt3, pt4);
-                    context.BeginFigure(pt1, true, false);
-                    context.LineTo(pt5, true, true);
-                    context.LineTo(pt3, true, true);
-                    context.LineTo(pt2, true, true);
-                    context.LineTo(pt4, true, true);
-                    context.LineTo(pt5, true, true);
-
+                case RelationTypes.Inheritance:
+                    LineHeads.Inheritance(context, X1, Y1, X2, Y2);
                     break;
-                case Relations.Aggregation:
 
+                case RelationTypes.Aggregation:
+                    LineHeads.Rhombe(context, X1, Y1, X2, Y2);
                     break;
-                case Relations.Composition:
 
+                case RelationTypes.Composition:
+                    LineHeads.Rhombe(context, X1, Y1, X2, Y2);
+                    Fill = Brushes.Black;
                     break;
             }
-        }
-
-        private Point MidPoint(Point p1, Point p2)
-        {
-            Point p = new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
-            return p;
         }
     }
 }

@@ -12,21 +12,8 @@ using Windows_Programming.ViewModel;
 namespace Windows_Programming.Command
 {
     // Undo/Redo command for adding a Line.
-    public class AddLineCommand : IUndoRedoCommand, ICommand
+    public class AddLineCommand : IUndoRedoCommand
     {
-        public string Type { get; set; }
-        public void Execute(object parameter)
-        {
-            Type = (string)parameter;
-            Debug.WriteLine(parameter);
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-        public event EventHandler CanExecuteChanged;
-
         // Fields.
         // The 'lines' field holds the current collection of lines, 
         //  and the reference points to the same collection as the one the MainViewModel point to, 
