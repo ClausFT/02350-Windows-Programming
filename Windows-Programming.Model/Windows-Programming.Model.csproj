@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Diagram.cs" />
     <Compile Include="Enums\RelationTypes.cs" />
+    <Compile Include="Line.cs" />
     <Compile Include="LineHeads.cs" />
     <Compile Include="NotifyBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
