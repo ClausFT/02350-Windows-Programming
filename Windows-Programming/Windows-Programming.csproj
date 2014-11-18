@@ -107,6 +107,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Styles\ToolbarStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TopPanelUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +149,35 @@
       <Project>{a4701fbc-33ee-42df-94b9-066fe9c43dc4}</Project>
       <Name>Windows-Programming.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\OpenFolder.png" />
+    <Resource Include="View\Images\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\Redo-icon.png" />
+    <Resource Include="View\Images\Undo-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\GenericDocument.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\AssociationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\InheritanceIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\InterfaceIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\ClassIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\AggregationIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\CompositionIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

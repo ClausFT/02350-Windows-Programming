@@ -6,8 +6,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
              mc:Ignorable="d" 
-             Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Width="{Binding Width}" Height="{Binding Height}" 
-             d:DesignHeight="100" d:DesignWidth="100">
+             Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" MinWidth="140" Width="auto" MinHeight="124" Height="auto" BorderBrush="Black" BorderThickness="2">
     <!--Denne grid bruges til at smide ting i oven på hinanden.-->
     <Grid>
         <!--Andet lag er teksten "Vælg" + "med klik" fordelt over og under talteksten der kommer senere.-->
@@ -22,12 +21,13 @@
             <TextBlock Grid.Row="1" Text="Vælg" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
             <TextBlock Grid.Row="3" Text="med klik" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
         </Grid>
-        <!--Tredje lag er den øverste ellipse med animation og gradient.-->
-        <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
+        
+        <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" RenderTransformOrigin="1,1" Margin="0,0,-0.4,0">
+
             <!--Baggrundsfarven der er en gradient.-->
             <Rectangle.Fill>
                 <RadialGradientBrush>
-                    <GradientStop Color="LightBlue" Offset="1.1" />
+                    <GradientStop Color="LightBlue" />
                 </RadialGradientBrush>
             </Rectangle.Fill>
 
@@ -56,16 +56,30 @@
             </i:Interaction.Triggers>
         </Rectangle>
         <!--Det fjerde og øverste lag indholder punktets nummer, placeret i midten med TextAlignment og en grid.-->
-        <Grid Width="{Binding Width}" Height="{Binding Height}">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="12*"/>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="13*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-
-            <TextBlock Margin="20,20,0,0" Text=""/>
-            <TextBox x:Name="ReadWriteTB" Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Left" Margin="20,5,0,0" Height="35" Width="70" Background="LightBlue"/>
             
+            <Expander Grid.Row="2" Header="Add" ExpandDirection="Right" IsExpanded="False"
+                      BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Left">
+                 <TextBox Text="Add Function" BorderThickness="2" BorderBrush="Black" />
+            </Expander>
+            <TextBox Grid.Row="0" x:Name="ReadWriteTB" Width="140" Text="{Binding Name}" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" BorderThickness="0.2" BorderBrush="Black">
+               
+            </TextBox>
+            <Rectangle Height="2" Grid.Row="1" Width="140" Fill="Red" Margin="0, 1" />
+            <Rectangle Height="2" Grid.Row="3" Width="140" Fill="Red" Margin="0, 1" />
+
+            <Expander Grid.Row="4" Header="Add" ExpandDirection="Right" IsExpanded="False"
+                      BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Left">
+                <TextBox Text="Add Function" BorderBrush="Black" BorderThickness="2" />
+            </Expander>
+
         </Grid>
     </Grid>
 </UserControl>
