@@ -12,9 +12,9 @@ namespace Windows_Programming.Model
     public class Line : NotifyBase
     {
         // Properties.
-        // Normally Auto-Implemented Properties (http://msdn.microsoft.com/en-us/library/bb384054.aspx) would be used, 
-        //  but in this case additional work has to be done when the property is changed, 
-        //  which is to raise an INotifyPropertyChanged event that notifies the View (GUI) that this model property has changed, 
+        // Normally Auto-Implemented Properties (http://msdn.microsoft.com/en-us/library/bb384054.aspx) would be used,
+        //  but in this case additional work has to be done when the property is changed,
+        //  which is to raise an INotifyPropertyChanged event that notifies the View (GUI) that this model property has changed,
         //  so the graphical representation can be updated.
 
         private Shape from;
