@@ -12,6 +12,10 @@ namespace Windows_Programming.Model
     // The Line class has a reference to 2 shapes, that it connects.
     public class Line : NotifyBase
     {
+        public Line()
+        {
+            StrokeThickness = 1;
+        }
         // Properties.
         // Normally Auto-Implemented Properties (http://msdn.microsoft.com/en-us/library/bb384054.aspx) would be used, 
         //  but in this case additional work has to be done when the property is changed, 
@@ -36,24 +40,20 @@ namespace Windows_Programming.Model
         private int _toY;
         public int ToY { get { return _toY; } set { _toY = value; NotifyPropertyChanged("ToY"); } }
 
-        private double _midX;
-        public double MidX { get { return _midX; } set { _midX = value; NotifyPropertyChanged("MidX"); } }
-
-        private double _midY;
-        public double MidY { get { return _midY; } set { _midY = value; NotifyPropertyChanged("MidY"); } }
-
         private string _text;
         public string Text { get { return _text; } set { _text = value; NotifyPropertyChanged("Text"); } }
 
-        private Thickness _padding;
-        public Thickness Padding { get { return _padding; } set { _padding = value; NotifyPropertyChanged("Padding"); } }
+        private Thickness _textMargin;
+        public Thickness TextMargin { get { return _textMargin; } set { _textMargin = value; NotifyPropertyChanged("TextMargin"); } }
+
+        private double _strokeThickness;
+        public double StrokeThickness { get { return _strokeThickness; } set { _strokeThickness = value; NotifyPropertyChanged("StrokeThickness"); } }
 
         public RelationTypes Type { get; set; }
 
         // Sets the coordinates to the shortest line between the two shapes
         public void SetShortestLine()
         {
-            Text = "This is a label";
             int[,] coord = { { From.X, From.Y + From.Height, To.X, To.Y+1 }, //bottom-top
                              { From.X, From.Y+1, To.X, To.Y + To.Height+1 }, //top-bottom
                              { From.X + From.Width, From.Y, To.X+1, To.Y },  //right-left
@@ -117,9 +117,7 @@ namespace Windows_Programming.Model
 
             //Compute the new midpoint of the line
             Point p = Compute.MidPoint(new Point(FromX, FromY), new Point(ToX, ToY));
-            MidX = p.X;
-            MidY = p.Y;
-            Padding = new Thickness(MidX, MidY, 0, 0);
+            TextMargin = new Thickness(p.X+2, p.Y+2, 0, 0);
         }
     }
 }

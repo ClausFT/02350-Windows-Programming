@@ -21,9 +21,8 @@
             <TextBlock Grid.Row="1" Text="Vælg" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
             <TextBlock Grid.Row="3" Text="med klik" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
         </Grid>
-
+        <TextBlock Text="{Binding X}"></TextBlock>
         <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" RenderTransformOrigin="1,1" Margin="0,0,-0.4,0">
-
             <!--Baggrundsfarven der er en gradient.-->
             <Rectangle.Fill>
                 <RadialGradientBrush>

@@ -80,7 +80,6 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\LineHeads.cs" />
     <Compile Include="View\Relation.cs" />
-    <Compile Include="View\RelationText.cs" />
     <Compile Include="View\ShapeUserControl.xaml.cs">
       <DependentUpon>ShapeUserControl.xaml</DependentUpon>
     </Compile>

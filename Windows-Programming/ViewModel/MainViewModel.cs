@@ -1,7 +1,10 @@
 using System.Diagnostics;
+using System.Windows.Data;
+using System.Windows.Ink;
 using Windows_Programming.Model;
 using Windows_Programming;
 using Windows_Programming.Model.Enums;
+using Windows_Programming.View;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -43,7 +46,10 @@ namespace Windows_Programming.ViewModel
 
     public class MainViewModel : ViewModelBase
     {
+        //Type for the shape to be created
         private RelationTypes Type { get; set; }
+        //Selected line for adding relation text
+        private Line SelectedLine { get; set; }
         // A reference to the Undo/Redo controller.
         private UndoRedoController undoRedoController = UndoRedoController.GetInstance();
         private SaveLoadController saveLoadController = new SaveLoadController();
@@ -51,13 +57,14 @@ namespace Windows_Programming.ViewModel
 
         // Keeps track of the state, depending on whether a line is being added or not.
         private bool isAddingLine;
+        private bool hasSelectedLine { get { return (SelectedLine != null); } }
         // Used for saving the shape that a line is drawn from, while it is being drawn.
         private Shape addingLineFrom;
         // Saves the initial point that the mouse has during a move operation.
         private Point moveShapePoint;
         // Used for making the shapes transparent when a new line is being added.
         public double ModeOpacity { get { return isAddingLine ? 0.4 : 1.0; } }
-
+        
         // The purpose of using an ObservableCollection instead of a List is that it implements the INotifyCollectionChanged interface, 
         //  which is different from the INotifyPropertyChanged interface.
         // By implementing the INotifyCollectionChanged interface, an event is thrown whenever an element is added or removed from the collection.
@@ -83,40 +90,18 @@ namespace Windows_Programming.ViewModel
         public ICommand AddInheritanceCommand { get; private set; }
         public ICommand AddAggregationCommand { get; private set; }
         public ICommand AddCompositionCommand { get; private set; }
-        
-
-        //public ICommand AddLineCommand { get; private set; }
 
         // Commands that the UI can be bound to.
         public ICommand MouseDownShapeCommand { get; private set; }
+        public ICommand MouseDownLineCommand { get; private set; }
         public ICommand MouseMoveShapeCommand { get; private set; }
         public ICommand MouseUpShapeCommand { get; private set; }
 
         public MainViewModel()
         {
             // Here the list of Shapes is filled with 2 Nodes. 
-            Shapes = new ObservableCollection<Shape>() { 
-                // The "new Type() { prop1 = value1, prop2 = value }" syntax is called an Object Initializer, which creates an object and sets its values.
-
-                // This is equivalent to the following:
-                // Shape shape1 = new Shape();
-                // shape1.X = 30;
-                // shape1.Y = 40;
-                // shape1.Width = 80;
-                // shape1.Height = 80;
-
-                // Also a constructor could be created for the Shape class that takes the parameters (X, Y, Width and Height), 
-                //  and the following could be done:
-                // new Shape(30, 40, 80, 80);
-
-
-            };
-            // Here the list of Lines i filled with 1 Line that connects the 2 Shapes in the Shapes collection.
-            // ElementAt() is an Extension Method, that like many others can be used on all types of collections.
-            // It works just like the "Shapes[0]" syntax would be used for arrays.
-            Lines = new ObservableCollection<Line>() { 
-                
-            };
+            Shapes = new ObservableCollection<Shape>();
+            Lines = new ObservableCollection<Line>();
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             // For these commands the methods are not part of the MainViewModel, but part of the UndoRedoController.
@@ -138,6 +123,7 @@ namespace Windows_Programming.ViewModel
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             MouseDownShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseDownShape);
+            MouseDownLineCommand = new RelayCommand<MouseButtonEventArgs>(MouseDownLine);
             MouseMoveShapeCommand = new RelayCommand<MouseEventArgs>(MouseMoveShape);
             MouseUpShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseUpShape);
         }
@@ -159,6 +145,7 @@ namespace Windows_Programming.ViewModel
         // Adds a Shape with an AddShapeCommand.
         public void AddShape()
         {
+            RemoveLineFocus();
             undoRedoController.AddAndExecute(new AddShapeCommand(Shapes, new Shape()));
         }
 
@@ -181,6 +168,7 @@ namespace Windows_Programming.ViewModel
 
         public void AddAssociation()
         {
+            RemoveLineFocus();
             Type = RelationTypes.Association;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
@@ -188,6 +176,7 @@ namespace Windows_Programming.ViewModel
 
         public void AddInheritance()
         {
+            RemoveLineFocus();
             Type = RelationTypes.Inheritance;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
@@ -195,6 +184,7 @@ namespace Windows_Programming.ViewModel
 
         public void AddAggregation()
         {
+            RemoveLineFocus();
             Type = RelationTypes.Aggregation;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
@@ -202,6 +192,7 @@ namespace Windows_Programming.ViewModel
 
         public void AddComposition()
         {
+            RemoveLineFocus();
             Type = RelationTypes.Composition;
             isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
@@ -227,12 +218,49 @@ namespace Windows_Programming.ViewModel
             if (!isAddingLine) e.MouseDevice.Target.CaptureMouse();
         }
 
+        private void RemoveLineFocus()
+        {
+            if (hasSelectedLine)
+            {
+                SelectedLine.StrokeThickness = 1;
+                SelectedLine = null;
+                RelationText = string.Empty;
+            }
+        }
+
+        //Contains the relation text for the selected line
+        private string _relationText;
+        public string RelationText
+        {
+            get { return _relationText; }
+            set
+            {
+                _relationText = value;
+                if (hasSelectedLine)
+                    SelectedLine.Text = RelationText;
+                RaisePropertyChanged();
+            }
+        }
+
+        public void MouseDownLine(MouseEventArgs e)
+        {
+            if (hasSelectedLine)
+                SelectedLine.StrokeThickness = 1;
+            
+            FrameworkElement lineVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            // From the shapes visual element, the Shape object which is the DataContext is retrieved.
+            SelectedLine = (Line)lineVisualElement.DataContext;
+            SelectedLine.StrokeThickness = 2;
+            RelationText = (!string.IsNullOrEmpty(SelectedLine.Text)) ? SelectedLine.Text : string.Empty;
+        }
+
         // This is only used for moving a Shape, and only if the mouse is already captured.
         public void MouseMoveShape(MouseEventArgs e)
         {
             // Checks that the mouse is captured and that a line is not being drawn.
             if (Mouse.Captured != null && !isAddingLine)
             {
+                RemoveLineFocus();
                 // It is now known that the mouse is captured and here the visual element that the mouse is captured by is retrieved.
                 FrameworkElement shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
                 // From the shapes visual element, the Shape object which is the DataContext is retrieved.
@@ -252,8 +280,7 @@ namespace Windows_Programming.ViewModel
                 shapeModel.CanvasCenterY = (int)mousePosition.Y;
 
                 foreach (Line element in Lines)
-                    element.SetShortestLine();
-                    
+                    element.SetShortestLine();    
             }
         }
 
@@ -284,7 +311,10 @@ namespace Windows_Programming.ViewModel
                     //  a Line is added using an 'AddLineCommand', with a new Line given between the two shapes chosen.
                     Line line = new Line() { From = addingLineFrom, To = shape, Type = Type};
                     undoRedoController.AddAndExecute(new AddLineCommand(Lines, line));
+                    RemoveLineFocus(); //If a line was selected, remove focus
                     line.SetShortestLine();
+                    line.StrokeThickness = 2;
+                    SelectedLine = line;
                     // The property used for visually indicating that a Line is being Drawn is cleared, 
                     //  so the View can return to its original and default apperance.
                     addingLineFrom.IsSelected = false;

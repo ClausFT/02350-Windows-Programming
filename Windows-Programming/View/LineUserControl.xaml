@@ -1,8 +1,10 @@
 ﻿<UserControl x:Class="Windows_Programming.View.LineUserControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
              xmlns:view="clr-namespace:Windows_Programming.View"
              mc:Ignorable="d" 
              d:DesignHeight="10" d:DesignWidth="10">
@@ -10,9 +12,16 @@
     <!-- The important thing to understand is that the DataContext of this UserControl is a 'Line' object, -->
     <!--  from the MainViewModels 'Lines' collection because this 'UserControl' is used by the ItemsCollection in the MainWindow, -->
     <!--  and that ItemsCollection is bound to the MainViewModels 'Lines' collection. -->
+    
+    <!--<view:RelationText MidX="{Binding MidX}" MidY="{Binding MidY}" Text="{Binding Text}" Padding="{Binding Padding}"></view:RelationText>-->
+    
     <Canvas>
-        <view:Relation X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Type="{Binding Type}" Stroke="Black" StrokeThickness="1"/>
-        <!--<view:RelationText MidX="{Binding MidX}" MidY="{Binding MidY}" Text="{Binding Text}" Padding="{Binding Padding}"></view:RelationText>-->
-        <TextBlock Text="{Binding Text}" Padding="{Binding Padding}" ></TextBlock>
+        <view:Relation X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Type="{Binding Type}" Stroke="Black" StrokeThickness="{Binding StrokeThickness}"/>
+        <TextBlock Background="White" Text="{Binding Text}" Margin="{Binding TextMargin}" ></TextBlock>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDown">
+                <cmd:EventToCommand Command="{Binding DataContext.MouseDownLineCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" PassEventArgsToCommand="True"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
     </Canvas>
 </UserControl>

@@ -6,7 +6,7 @@
              xmlns:viewModel="clr-namespace:Windows_Programming.ViewModel"
              xmlns:command="clr-namespace:Windows_Programming.Command"
              mc:Ignorable="d" 
-             d:DesignHeight="110" d:DesignWidth="600">
+             d:DesignHeight="110" d:DesignWidth="1200">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -219,6 +219,18 @@
                         </Button>
                     </StackPanel>
                 </GroupBox>
+
+
+                <!--Data-->
+                <GroupBox Header="Data" Style="{StaticResource ToolbarGroup}" Margin="3" Width="150">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical" Margin="0,2,0,2">
+                            <Label>Relation Name</Label>
+                            <TextBox Text="{Binding RelationText, UpdateSourceTrigger=PropertyChanged}" Width="140"></TextBox>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+                
             </ToolBar>
         </StackPanel>
     </StackPanel>

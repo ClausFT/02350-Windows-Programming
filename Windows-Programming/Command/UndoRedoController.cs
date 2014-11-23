@@ -58,6 +58,7 @@ namespace Windows_Programming.Command
             redoStack.Push(command);
             command.UnExecute();
 
+            //Not so pretty hack for updating line positions when undoing
             foreach (Line element in MainViewModel.Lines)
                 element.SetShortestLine();
         }

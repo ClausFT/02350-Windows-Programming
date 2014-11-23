@@ -5,7 +5,7 @@
         xmlns:View="clr-namespace:Windows_Programming.View"
         xmlns:shapes="clr-namespace:Windows_Programming.Model"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="800 " Width="1000">
     <!-- This is where you set the Data Context of the View (Window), which tells the WPF engine where to look for the properties used by the bindings. -->
     <!-- The namespace of the MainViewModel class has to be specified above, this is important to remember, to avoid a lot of problems in getting bindings to work. -->
     <!-- Also the namespaces (Java: packages) has to be defined, for the used classes that are not part of WPF, -->
@@ -29,7 +29,7 @@
         <!--  To override the visual presentation of the elements, Data Templates are used, which can be seen in the "app.xaml" file. -->
         <!-- These ItemsControls are bound to the public Lines and Shapes properties of the MainViewModel class. -->
         <!-- The order of the ItemsControls are important as the Lines will be shown first with the Shapes on top, try switching them. -->
-        
+            
             <ItemsControl ItemsSource="{Binding Lines}"/>
             <ItemsControl ItemsSource="{Binding Shapes}"/>
         </Grid>
