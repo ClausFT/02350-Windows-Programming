@@ -46,6 +46,8 @@ namespace Windows_Programming.ViewModel
         private RelationTypes Type { get; set; }
         // A reference to the Undo/Redo controller.
         private UndoRedoController undoRedoController = UndoRedoController.GetInstance();
+        private SaveLoadController saveLoadController = new SaveLoadController();
+        
 
         // Keeps track of the state, depending on whether a line is being added or not.
         private bool isAddingLine;
@@ -69,6 +71,8 @@ namespace Windows_Programming.ViewModel
         // Commands that the UI can be bound to.
         public ICommand UndoCommand { get; private set; }
         public ICommand RedoCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+        public ICommand LoadCommand { get; private set; }
 
         // Commands that the UI can be bound to.
         public ICommand AddShapeCommand { get; private set; }
@@ -119,6 +123,8 @@ namespace Windows_Programming.ViewModel
             // Her vidersendes metode kaldne til UndoRedoControlleren.
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.CanUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.CanRedo);
+            SaveCommand = new RelayCommand(Save);
+            LoadCommand = new RelayCommand(Load);
 
             // The commands are given the methods they should use to execute, and find out if they can execute.
             AddShapeCommand = new RelayCommand(AddShape);
@@ -135,7 +141,21 @@ namespace Windows_Programming.ViewModel
             MouseMoveShapeCommand = new RelayCommand<MouseEventArgs>(MouseMoveShape);
             MouseUpShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseUpShape);
         }
+        public void Save()
+        {
+            Diagram diagram = new Diagram();
+            diagram.shapes = Shapes.ToList();
+            diagram.lines = Lines.ToList();
+            saveLoadController.Save(diagram, "C:\\Users\\Benjamin\\test.txt");
+        }
+        public void Load()
+        {
+            Diagram diagram;
+            diagram = saveLoadController.Load("C:\\Users\\Benjamin\\test.txt");
+            Shapes = new ObservableCollection<Shape>(diagram.shapes);
+            Lines = new ObservableCollection<Line>(diagram.lines);
 
+        }
         // Adds a Shape with an AddShapeCommand.
         public void AddShape()
         {

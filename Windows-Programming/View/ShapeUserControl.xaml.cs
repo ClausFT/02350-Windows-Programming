@@ -24,5 +24,15 @@ namespace Windows_Programming.View
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AttributePanel.Children.Add(new TextBox());
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MethodPanel.Children.Add(new TextBox());
+        }
     }
 }
