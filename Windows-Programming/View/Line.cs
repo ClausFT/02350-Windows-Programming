@@ -1,13 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Shapes;
+﻿using Windows_Programming.Model;
 using Windows_Programming.Model.Enums;
 using Windows_Programming.Model.Utils;
 
-namespace Windows_Programming.Model
+namespace Windows_Programming.View
 {
     // The Line class has a reference to 2 shapes, that it connects.
     public class Line : NotifyBase
@@ -36,24 +31,11 @@ namespace Windows_Programming.Model
         private int _toY;
         public int ToY { get { return _toY; } set { _toY = value; NotifyPropertyChanged("ToY"); } }
 
-        private double _midX;
-        public double MidX { get { return _midX; } set { _midX = value; NotifyPropertyChanged("MidX"); } }
-
-        private double _midY;
-        public double MidY { get { return _midY; } set { _midY = value; NotifyPropertyChanged("MidY"); } }
-
-        private string _text;
-        public string Text { get { return _text; } set { _text = value; NotifyPropertyChanged("Text"); } }
-
-        private Thickness _padding;
-        public Thickness Padding { get { return _padding; } set { _padding = value; NotifyPropertyChanged("Padding"); } }
-
         public RelationTypes Type { get; set; }
 
         // Sets the coordinates to the shortest line between the two shapes
         public void SetShortestLine()
         {
-            Text = "This is a label";
             int[,] coord = { { From.X, From.Y + From.Height, To.X, To.Y+1 }, //bottom-top
                              { From.X, From.Y+1, To.X, To.Y + To.Height+1 }, //top-bottom
                              { From.X + From.Width, From.Y, To.X+1, To.Y },  //right-left
@@ -110,16 +92,11 @@ namespace Windows_Programming.Model
                     }
                 }
             }
+
             FromX = x1;
             FromY = y1;
             ToX = x2;
             ToY = y2;
-
-            //Compute the new midpoint of the line
-            Point p = Compute.MidPoint(new Point(FromX, FromY), new Point(ToX, ToY));
-            MidX = p.X;
-            MidY = p.Y;
-            Padding = new Thickness(MidX, MidY, 0, 0);
         }
     }
 }

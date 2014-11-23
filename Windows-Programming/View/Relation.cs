@@ -1,14 +1,9 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Input;
-using System.Windows.Controls;
-using System.Windows.Shapes;
 using Windows_Programming.Model.Enums;
-using Windows_Programming.Model.Utils;
 
-namespace Windows_Programming.Model
+namespace Windows_Programming.View
 {
     public class Relation : System.Windows.Shapes.Shape
     {

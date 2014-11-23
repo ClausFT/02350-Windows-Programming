@@ -159,14 +159,6 @@ namespace Windows_Programming.ViewModel
             undoRedoController.AddAndExecute(new RemoveShapesCommand(Shapes, Lines, _shapes.Cast<Shape>().ToList()));
         }
 
-        // Starts the procedure to remove a Line, by changing the mode to 'isAddingLine', 
-        //  and making the shapes transparent.
-        //public void AddLine()
-        //{
-        //    isAddingLine = true;
-        //    RaisePropertyChanged("ModeOpacity");
-        //}
-
         public void AddAssociation()
         {
             Type = RelationTypes.Association;

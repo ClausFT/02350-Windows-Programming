@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Windows_Programming.Model.Utils
 {
-    class Compute
+    public class Compute
     {
         // Calculates the length of a line given its coordinates
         public static double LineLength(double x1, double y1, double x2, double y2)

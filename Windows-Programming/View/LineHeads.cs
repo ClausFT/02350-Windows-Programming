@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Windows_Programming.Model.Utils;
 
-namespace Windows_Programming.Model
+namespace Windows_Programming.View
 {
     public class LineHeads
     {

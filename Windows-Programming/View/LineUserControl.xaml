@@ -3,12 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:shapes="clr-namespace:Windows_Programming.Model;assembly=Windows-Programming.Model"
+             xmlns:view="clr-namespace:Windows_Programming.View"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="100">
+             d:DesignHeight="10" d:DesignWidth="10">
     <!-- The 'Line' class is shown with a visual 'Line' control, just like in the 02350SuperSimpleDemo. -->
     <!-- The important thing to understand is that the DataContext of this UserControl is a 'Line' object, -->
     <!--  from the MainViewModels 'Lines' collection because this 'UserControl' is used by the ItemsCollection in the MainWindow, -->
     <!--  and that ItemsCollection is bound to the MainViewModels 'Lines' collection. -->
-    <shapes:Relation X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Type="{Binding Type}" Stroke="Black" StrokeThickness="1"/>
+    <Canvas>
+        <view:Relation X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Type="{Binding Type}" Stroke="Black" StrokeThickness="1"/>
+        <!--<view:RelationText MidX="{Binding MidX}" MidY="{Binding MidY}" Text="{Binding Text}" Padding="{Binding Padding}"></view:RelationText>-->
+        <TextBlock Text="{Binding Text}" Padding="{Binding Padding}" ></TextBlock>
+    </Canvas>
 </UserControl>
