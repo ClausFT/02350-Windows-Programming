@@ -12,39 +12,35 @@ namespace Windows_Programming.ViewModel
 {
     public class SaveLoadController
     {
-        public void Save<T>(T data, String path)
+        public void Save<T>(T data)
         {
-           //SaveFileDialog saveFileDialog = new SaveFileDialog();
-           //saveFileDialog.Filter = "Xml file|*.xml";
-           //saveFileDialog.Title = "Save a file ";
-           //saveFileDialog.ShowDialog();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Xml file|*.xml";
+            saveFileDialog.Title = "Save a file ";
+            saveFileDialog.ShowDialog();
 
-           //// If the file name is not an empty string open it for saving.
-           //if (saveFileDialog.FileName != "")
-           //{
-               
-               //using (FileStream fileStream = (FileStream)saveFileDialog.OpenFile())
-               using (FileStream fileStream = File.Create(path))
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog.FileName != "")
+            {
+
+                //using (FileStream fileStream = File.Create(path))
+                using (FileStream fileStream = (FileStream)saveFileDialog.OpenFile())
                {
                    XmlSerializer serializer = new XmlSerializer(typeof(T));
                    serializer.Serialize(fileStream, data);
                }
-           //}
+           }
         }
 
-        public Diagram Load(String path)
+        public Diagram Load()
         {
-
-            // Displays an OpenFileDialog so the user can select a Cursor.
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Xml Files|*.xml";
             openFileDialog.Title = "Select an Xml file";
+            openFileDialog.ShowDialog();
 
-            // Show the Dialog.
-            // If the user clicked OK in the dialog and
-            // a .CUR file was selected, open it.
-
-            using (FileStream readFileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            //using (FileStream readFileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream readFileStream = (FileStream)openFileDialog.OpenFile())
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Diagram));
                 Diagram LoadedObj = (Diagram)serializer.Deserialize(readFileStream);
@@ -52,6 +48,8 @@ namespace Windows_Programming.ViewModel
                 readFileStream.Close();
                 return LoadedObj;
             }
+
+             //return null;
         }
     }
 }

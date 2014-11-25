@@ -132,14 +132,16 @@ namespace Windows_Programming.ViewModel
             Diagram diagram = new Diagram();
             diagram.shapes = Shapes.ToList();
             diagram.lines = Lines.ToList();
-            saveLoadController.Save(diagram, "C:\\Users\\Benjamin\\test.txt");
+            saveLoadController.Save(diagram);
         }
         public void Load()
         {
             Diagram diagram;
-            diagram = saveLoadController.Load("C:\\Users\\Benjamin\\test.txt");
+            diagram = saveLoadController.Load();
             Shapes = new ObservableCollection<Shape>(diagram.shapes);
-            Lines = new ObservableCollection<Line>(diagram.lines);
+            Lines = new ObservableCollection<Line>(diagram.lines);  
+            foreach (Line element in Lines)
+                element.SetShortestLine();
 
         }
         // Adds a Shape with an AddShapeCommand.

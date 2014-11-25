@@ -18,7 +18,7 @@ namespace Windows_Programming.Model
         //  and default getter setter methods should be generated 
         //  (the setter will be private because of the "private set;" part).
         // This is called Auto-Implemented Properties (http://msdn.microsoft.com/en-us/library/bb384054.aspx).
-        public int Number { get; private set; }
+        public int Number { get; set; }
 
         private int x;
         public int X { get { return x; } set { x = value; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); } }
