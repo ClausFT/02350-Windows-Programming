@@ -20,7 +20,7 @@
         <!-- This Visual description is defined in the 'EdgeUserControl'. -->
         <DataTemplate DataType="{x:Type Model:Line}">
             <Canvas>
-                <View:LineUserControl/>
+                <View:RelationUserControl/>
             </Canvas>
         </DataTemplate>
         <!-- This part defines how a button should look by default, in this application. -->

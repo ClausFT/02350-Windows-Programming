@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ namespace Windows_Programming.Model
     // The Shape class descripes a shape with a position (X and Y), and a size (Width and Height).
     public class Shape : NotifyBase
     {
+
+        public ObservableCollection<string> Propperties { get; set; }
+        public ObservableCollection<string> Methods { get; set; }
+        
         // The static integer counter field is used to set the integer Number property to a unique number for each Shape object.
         private static int counter = 0;
 
@@ -74,14 +79,18 @@ namespace Windows_Programming.Model
         {
             // This just means that the integer field called counter is incremented before its value is used to set the Number integer property.
             Number = ++counter;
-            X = Y = 200;
+            X = Y = 0;
             // The "X = Y = value" syntax corresponds to the following:
             // X = 200;
             // Y = 200;
-            Width = Height = 100;
+            Width = 145;
+            Height = 124;
             // The "Width = Height = value" syntax corresponds to the following:
             // Width = 200;
             // Height = 200;
+
+            Methods = new ObservableCollection<string>();
+            Propperties = new ObservableCollection<string>();
         }
 
         // By overwriting the ToString() method, the default representation of the class is changed from the full namespace (Java: package) name, 

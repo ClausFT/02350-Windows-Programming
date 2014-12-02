@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -9,18 +11,12 @@ using Windows_Programming.Model.Utils;
 
 namespace Windows_Programming.Model
 {
-    // The Line class has a reference to 2 shapes, that it connects.
     public class Line : NotifyBase
     {
         public Line()
         {
             StrokeThickness = 1;
         }
-        // Properties.
-        // Normally Auto-Implemented Properties (http://msdn.microsoft.com/en-us/library/bb384054.aspx) would be used, 
-        //  but in this case additional work has to be done when the property is changed, 
-        //  which is to raise an INotifyPropertyChanged event that notifies the View (GUI) that this model property has changed, 
-        //  so the graphical representation can be updated.
 
         private Shape from;
         public Shape From { get { return from; } set { from = value; NotifyPropertyChanged("From"); } }
@@ -59,10 +55,10 @@ namespace Windows_Programming.Model
                              { From.X + From.Width, From.Y, To.X+1, To.Y },  //right-left
                              { From.X+1, From.Y, To.X + To.Width+1, To.Y } };  //left-right
 
-            int widthUnit = From.Width / 25;
-            int heightUnit = From.Height/ 25;
+            int widthUnit = From.Width / 25; //Split width in 25 pieces
+            int heightUnit = From.Height / 25; //Split height in 25 pieces
             int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-            double minLength = -1;
+            double minLength = -1; //Used to keep track of the shortest line calculated so far
             const int margin = 5;
 
             //This loop calculates shortest line from top-bottom/bottom-top (Y axis is constant)
@@ -76,14 +72,15 @@ namespace Windows_Programming.Model
                         double lineLength = Compute.LineLength(coord[i, 0] + k, coord[i, 1], coord[i, 2] + j, coord[i, 3]);
 
                         //If current line is the shortest so far, save length and coordinates
-                        if (minLength == -1 || lineLength <= minLength)
-                        {
-                            minLength = lineLength;
-                            x1 = coord[i, 0] + k;
-                            y1 = coord[i, 1];
-                            x2 = coord[i, 2] + j;
-                            y2 = coord[i, 3];
-                        }
+                        if (minLength != -1 && lineLength >= minLength)
+                            continue;
+
+                        minLength = lineLength;
+                        x1 = coord[i, 0] + k;
+                        y1 = coord[i, 1];
+                        x2 = coord[i, 2] + j;
+                        y2 = coord[i, 3];
+                        
                     }
                 }
             }
@@ -99,14 +96,14 @@ namespace Windows_Programming.Model
                         double lineLength = Compute.LineLength(coord[i, 0], coord[i, 1] + k, coord[i, 2], coord[i, 3] + j);
 
                         //If current line is the shortest so far, save length and coordinates
-                        if (minLength == -1 || lineLength <= minLength)
-                        {
-                            minLength = lineLength;
-                            x1 = coord[i, 0];
-                            y1 = coord[i, 1] + k;
-                            x2 = coord[i, 2];
-                            y2 = coord[i, 3] + j;
-                        }
+                        if (minLength != -1 && lineLength >= minLength)
+                            continue;
+
+                        minLength = lineLength;
+                        x1 = coord[i, 0];
+                        y1 = coord[i, 1] + k;
+                        x2 = coord[i, 2];
+                        y2 = coord[i, 3] + j;
                     }
                 }
             }
