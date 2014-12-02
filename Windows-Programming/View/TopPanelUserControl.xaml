@@ -21,9 +21,9 @@
             <DockPanel>
                 <Menu DockPanel.Dock="Top">
                     <MenuItem Header="_File">
-                        <MenuItem Header="_New" />
-                        <MenuItem Header="_Open" />
-                        <MenuItem Header="_Save" />
+                        <MenuItem Header="_New" Command="{Binding NewCommand}"/>
+                        <MenuItem Header="_Open" Command="{Binding LoadCommand}"/>
+                        <MenuItem Header="_Save" Command="{Binding SaveCommand}"/>
                         <Separator />
                         <MenuItem Header="_Exit" />
                     </MenuItem>
@@ -56,7 +56,7 @@
                         <StackPanel Orientation="Vertical" Margin="0,2,0,2">
                             <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
-                            Command="">
+                            Command="{Binding LoadCommand}">
                                 <Button.Content>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -70,7 +70,7 @@
                             </Button>
                             <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
                             Style="{StaticResource ToolBarButtonBaseStyle}"
-                            Command="">
+                            Command="{Binding SaveCommand}">
                                 <Button.Content>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
