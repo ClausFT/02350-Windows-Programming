@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ namespace Windows_Programming.Model
     // The Shape class descripes a shape with a position (X and Y), and a size (Width and Height).
     public class Shape : NotifyBase
     {
+
+        public ObservableCollection<string> Propperties { get; set; }
+        public ObservableCollection<string> Methods { get; set; }
+        
         // The static integer counter field is used to set the integer Number property to a unique number for each Shape object.
         private static int counter = 0;
 
@@ -18,7 +23,7 @@ namespace Windows_Programming.Model
         //  and default getter setter methods should be generated 
         //  (the setter will be private because of the "private set;" part).
         // This is called Auto-Implemented Properties (http://msdn.microsoft.com/en-us/library/bb384054.aspx).
-        public int Number { get; private set; }
+        public int Number { get; set; }
 
         private int x;
         public int X { get { return x; } set { x = value; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); } }
@@ -83,6 +88,9 @@ namespace Windows_Programming.Model
             // The "Width = Height = value" syntax corresponds to the following:
             // Width = 200;
             // Height = 200;
+
+            Methods = new ObservableCollection<string>();
+            Propperties = new ObservableCollection<string>();
         }
 
         // By overwriting the ToString() method, the default representation of the class is changed from the full namespace (Java: package) name, 

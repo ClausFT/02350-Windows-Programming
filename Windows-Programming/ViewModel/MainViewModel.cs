@@ -70,6 +70,10 @@ namespace Windows_Programming.ViewModel
         public ICommand MouseMoveShapeCommand { get; private set; }
         public ICommand MouseUpShapeCommand { get; private set; }
 
+        public ICommand AddAttributeCommand { get; private set; }
+        public ICommand AddMethodCommand { get; private set; }
+
+        
         public MainViewModel()
         {
             Shapes = new ObservableCollection<Shape>();
@@ -93,20 +97,52 @@ namespace Windows_Programming.ViewModel
             MouseDownLineCommand = new RelayCommand<MouseButtonEventArgs>(MouseDownLine);
             MouseMoveShapeCommand = new RelayCommand<MouseEventArgs>(MouseMoveShape);
             MouseUpShapeCommand = new RelayCommand<MouseButtonEventArgs>(MouseUpShape);
+
+            AddAttributeCommand = new RelayCommand<object>(AddAttribute);
+            AddMethodCommand = new RelayCommand<object>(AddMethod);
         }
+
+        private void AddAttribute(object i)
+        {
+            FrameworkElement shapeVisualElement = (FrameworkElement)i;
+            // From the shapes visual element, the Shape object which is the DataContext is retrieved.
+            Shape shapeModel = (Shape)shapeVisualElement.DataContext;
+
+            if (shapeModel != null)
+                undoRedoController.AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, ""));
+        }
+
+        private void AddMethod(object l)
+        {
+
+            FrameworkElement shapeVisualElement = (FrameworkElement)l;
+            Shape shapeModel = (Shape)shapeVisualElement.DataContext;
+
+            if (shapeModel != null)
+                undoRedoController.AddAndExecute(new AddMethodCommand(shapeModel.Methods, ""));
+            
+            
+            
+            //MethodPanel.Children.Add(new TextBox());
+        }
+
+
+
         public void Save()
         {
             Diagram diagram = new Diagram();
             diagram.shapes = Shapes.ToList();
             diagram.lines = Lines.ToList();
-            saveLoadController.Save(diagram, "C:\\Users\\Benjamin\\test.txt");
+            saveLoadController.Save(diagram);
         }
         public void Load()
         {
             Diagram diagram;
-            diagram = saveLoadController.Load("C:\\Users\\Benjamin\\test.txt");
+            diagram = saveLoadController.Load();
             Shapes = new ObservableCollection<Shape>(diagram.shapes);
-            Lines = new ObservableCollection<Line>(diagram.lines);
+            Lines = new ObservableCollection<Line>(diagram.lines);  
+            foreach (Line element in Lines)
+                element.SetShortestLine();
 
         }
         // Adds a Shape with an AddShapeCommand.

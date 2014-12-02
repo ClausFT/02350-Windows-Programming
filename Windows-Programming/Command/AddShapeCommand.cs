@@ -43,4 +43,78 @@ namespace Windows_Programming.Command
             shapes.Remove(shape);
         }
     }
+
+    // Undo/Redo command for adding a Shape.
+    public class AddAttributeCommand : IUndoRedoCommand //TODO: Make AddMethodCommand
+    {
+        // Fields.
+        // The 'shapes' field holds the current collection of shapes, 
+        //  and the reference points to the same collection as the one the MainViewModel point to, 
+        //  therefore when this collection is changed in a object of this class, 
+        //  it also changes the collection that the MainViewModel uses.
+        // For a description of an ObservableCollection see the MainViewModel class.
+        private ObservableCollection<string> _attributes;
+        // The 'shape' field holds a new shape, that is added to the 'shapes' collection, 
+        //  and if undone, it is removed from the collection.
+        private string _attribute;
+
+        // Constructor for saving and changing the current state of the diagram 
+        //  (or at least the relevant parts).
+        public AddAttributeCommand(ObservableCollection<string> attributes, string attribute)
+        {
+            _attributes = attributes;
+            _attribute = attribute;
+        }
+
+        // Methods.
+        // This method is for doing and redoing the command.
+        public void Execute()
+        {
+            _attributes.Add(_attribute);
+        }
+
+        // This method is for undoing the command.
+        public void UnExecute()
+        {
+            _attributes.Remove(_attribute);
+        }
+    }
+
+
+    public class AddMethodCommand : IUndoRedoCommand 
+    {
+        // Fields.
+        // The 'shapes' field holds the current collection of shapes, 
+        //  and the reference points to the same collection as the one the MainViewModel point to, 
+        //  therefore when this collection is changed in a object of this class, 
+        //  it also changes the collection that the MainViewModel uses.
+        // For a description of an ObservableCollection see the MainViewModel class.
+        private ObservableCollection<string> _methods;
+        // The 'shape' field holds a new shape, that is added to the 'shapes' collection, 
+        //  and if undone, it is removed from the collection.
+        private string _method;
+
+        // Constructor for saving and changing the current state of the diagram 
+        //  (or at least the relevant parts).
+        public AddMethodCommand(ObservableCollection<string> methods, string method)
+        {
+            _methods = methods;
+            _method = method;
+        }
+
+        // Methods.
+        // This method is for doing and redoing the command.
+        public void Execute()
+        {
+            _methods.Add(_method);
+        }
+
+        // This method is for undoing the command.
+        public void UnExecute()
+        {
+            _methods.Remove(_method);
+        }
+    }
+
+
 }
