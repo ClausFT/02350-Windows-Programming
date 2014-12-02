@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Ink;
 using Windows_Programming.Model;
 using Windows_Programming;
@@ -35,13 +36,14 @@ namespace Windows_Programming.ViewModel
 
         // Keeps track of the state, depending on whether a line is being added or not.
         private bool _isAddingLine;
+        private bool _isRemovingShape;
         private bool HasSelectedLine { get { return (SelectedLine != null); } }
         // Used for saving the shape that a line is drawn from, while it is being drawn.
         private Shape _addingLineFrom;
         // Saves the initial point that the mouse has during a move operation.
         private Point _moveShapePoint;
         // Used for making the shapes transparent when a new line is being added.
-        public double ModeOpacity { get { return _isAddingLine ? 0.4 : 1.0; } }
+        public double ModeOpacity { get { return _isAddingLine || _isRemovingShape ? 0.4 : 1.0; } }
 
         // Collections containing shapes and lines
         public ObservableCollection<Shape> Shapes { get; set; }
@@ -85,7 +87,7 @@ namespace Windows_Programming.ViewModel
             LoadCommand = new RelayCommand(Load);
 
             AddShapeCommand = new RelayCommand(AddShape);
-            RemoveShapeCommand = new RelayCommand<IList>(RemoveShape, CanRemoveShape);
+            RemoveShapeCommand = new RelayCommand(RemoveShape, CanRemoveShape);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
 
             AddAssociationCommand = new RelayCommand(AddAssociation, CanAddLine);
@@ -135,6 +137,7 @@ namespace Windows_Programming.ViewModel
             diagram.lines = Lines.ToList();
             saveLoadController.Save(diagram);
         }
+
         public void Load()
         {
             Diagram diagram;
@@ -153,9 +156,9 @@ namespace Windows_Programming.ViewModel
         }
 
         // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
-        public bool CanRemoveShape(IList _shapes)
+        public bool CanRemoveShape()
         {
-            return _shapes.Count == 1;
+            return Shapes.Count > 0;
         }
 
         public bool CanAddLine()
@@ -164,9 +167,11 @@ namespace Windows_Programming.ViewModel
         }
 
         // Removes the chosen Shapes with a RemoveShapesCommand.
-        public void RemoveShape(IList _shapes)
+        public void RemoveShape()
         {
-            undoRedoController.AddAndExecute(new RemoveShapesCommand(Shapes, Lines, _shapes.Cast<Shape>().ToList()));
+            RemoveLineFocus();
+            _isRemovingShape = true;
+            RaisePropertyChanged("ModeOpacity");
         }
 
         public void AddAssociation()
@@ -228,6 +233,15 @@ namespace Windows_Programming.ViewModel
             RelationText = string.Empty;
         }
 
+        private void SetLineFocus(Line line)
+        {
+            if (HasSelectedLine)
+                return;
+
+            SelectedLine = line;
+            SelectedLine.StrokeThickness = 2;
+        }
+
         //Contains the relation text for the selected line
         private string _relationText;
         public string RelationText
@@ -245,21 +259,27 @@ namespace Windows_Programming.ViewModel
         public void MouseDownLine(MouseButtonEventArgs e)
         {
             if (HasSelectedLine)
-                SelectedLine.StrokeThickness = 1;
+                RemoveLineFocus();
 
             FrameworkElement lineVisualElement = (FrameworkElement)e.MouseDevice.Target;
             // From the shapes visual element, the Shape object which is the DataContext is retrieved.
-            SelectedLine = (Line)lineVisualElement.DataContext;
-            SelectedLine.StrokeThickness = 2;
+            SetLineFocus((Line)lineVisualElement.DataContext);
             RelationText = (!string.IsNullOrEmpty(SelectedLine.Text)) ? SelectedLine.Text : string.Empty;
         }
 
-        // This is only used for moving a Shape, and only if the mouse is already captured.
+        // This is used for moving a Shape, and only if the mouse is already captured.
         public void MouseMoveShape(MouseEventArgs e)
-        {
+        {                
             // Checks that the mouse is captured and that a line is not being drawn.
             if (Mouse.Captured == null || _isAddingLine)
                 return;
+
+            if (_isRemovingShape)
+            {
+                _isRemovingShape = false;
+                RaisePropertyChanged("ModeOpacity");
+                return;
+            }
 
             RemoveLineFocus();
             FrameworkElement shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
@@ -277,11 +297,13 @@ namespace Windows_Programming.ViewModel
 
         public void MouseUpShape(MouseButtonEventArgs e)
         {
+            FrameworkElement shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            Shape shape = (Shape)shapeVisualElement.DataContext;
+
             // Used for adding a Line.
             if (_isAddingLine)
             {
-                FrameworkElement shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
-                Shape shape = (Shape)shapeVisualElement.DataContext;
+                
                 if (_addingLineFrom == null) { _addingLineFrom = shape; }
                 else if (_addingLineFrom.Number != shape.Number)
                 {
@@ -289,17 +311,20 @@ namespace Windows_Programming.ViewModel
                     undoRedoController.AddAndExecute(new AddLineCommand(Lines, line));
                     RemoveLineFocus(); //If a line was selected, remove focus
                     line.SetShortestLine();
-                    line.StrokeThickness = 2;
-                    SelectedLine = line;
+                    SetLineFocus(line);
                     _isAddingLine = false;
                     _addingLineFrom = null;
                     RaisePropertyChanged("ModeOpacity");
                 }
             }
+            else if (_isRemovingShape) //Used for removing a shape
+            {
+                IList _shapeToRemove = new ArrayList();
+                _shapeToRemove.Add(shape);
+                undoRedoController.AddAndExecute(new RemoveShapesCommand(Shapes, Lines, _shapeToRemove.Cast<Shape>().ToList()));
+            }
             else // Used for moving a Shape.
             {
-                FrameworkElement shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
-                Shape shape = (Shape)shapeVisualElement.DataContext; // From the shapes visual element, the Shape object which is the DataContext is retrieved.
                 Canvas canvas = FindParentOfType<Canvas>(shapeVisualElement); // Canvas holding the shapes visual element
                 Point mousePosition = Mouse.GetPosition(canvas); //Mouse position relative to the canvas is gotten here.
                 undoRedoController.AddAndExecute(new MoveShapeCommand(shape, (int)_moveShapePoint.X, (int)_moveShapePoint.Y, (int)mousePosition.X, (int)mousePosition.Y));
