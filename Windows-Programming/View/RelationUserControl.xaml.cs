@@ -19,9 +19,9 @@ namespace Windows_Programming.View
     /// <summary>
     /// Interaction logic for LineUserControl.xaml
     /// </summary>
-    public partial class LineUserControl : UserControl
+    public partial class RelationUserControl : UserControl
     {
-        public LineUserControl()
+        public RelationUserControl()
         {
             InitializeComponent();
         }

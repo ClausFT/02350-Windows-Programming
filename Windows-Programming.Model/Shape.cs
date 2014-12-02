@@ -74,11 +74,12 @@ namespace Windows_Programming.Model
         {
             // This just means that the integer field called counter is incremented before its value is used to set the Number integer property.
             Number = ++counter;
-            X = Y = 200;
+            X = Y = 0;
             // The "X = Y = value" syntax corresponds to the following:
             // X = 200;
             // Y = 200;
-            Width = Height = 100;
+            Width = 145;
+            Height = 124;
             // The "Width = Height = value" syntax corresponds to the following:
             // Width = 200;
             // Height = 200;

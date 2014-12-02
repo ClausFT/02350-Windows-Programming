@@ -40,6 +40,12 @@ namespace Windows_Programming.Command
             command.Execute();
         }
 
+        public void Add(IUndoRedoCommand command)
+        {
+            undoStack.Push(command);
+            redoStack.Clear();
+        }
+
         // This informs the View (GUI) when the Undo command can be used.
         public bool CanUndo()
         {

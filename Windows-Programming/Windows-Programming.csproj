@@ -83,8 +83,8 @@
     <Compile Include="View\ShapeUserControl.xaml.cs">
       <DependentUpon>ShapeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LineUserControl.xaml.cs">
-      <DependentUpon>LineUserControl.xaml</DependentUpon>
+    <Compile Include="View\RelationUserControl.xaml.cs">
+      <DependentUpon>RelationUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TopPanelUserControl.xaml.cs">
       <DependentUpon>TopPanelUserControl.xaml</DependentUpon>
@@ -93,7 +93,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LineUserControl.xaml">
+    <Page Include="View\RelationUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

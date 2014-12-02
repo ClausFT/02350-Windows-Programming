@@ -21,7 +21,7 @@
             <TextBlock Grid.Row="1" Text="Vælg" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
             <TextBlock Grid.Row="3" Text="med klik" Foreground="Black" TextAlignment="Center" FontWeight="Bold"/>
         </Grid>
-        <TextBlock Text="{Binding X}"></TextBlock>
+        
         <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" RenderTransformOrigin="1,1" Margin="0,0,-0.4,0">
             <!--Baggrundsfarven der er en gradient.-->
             <Rectangle.Fill>
@@ -56,7 +56,7 @@
         </Rectangle>
         <!--Det fjerde og øverste lag indholder punktets nummer, placeret i midten med TextAlignment og en grid.-->
 
-        <Grid>
+        <Grid Name="TestGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -83,7 +83,7 @@
 
             <Rectangle Height="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Fill="Red" Margin="0, 1" />
             <Rectangle Height="2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="140" Fill="Red" Margin="0, 1" />
-            <Button Content="+a" Grid.Row="2" Grid.Column="0" Click="Button_Click" Width ="34" Height="24" Margin="4,4,4,4"/>
+            <Button Content="+a" Grid.Row="2" Grid.Column="0" Click="Button_Click" Width ="34" Height="24" Margin="4,4,4,4" Command="{Binding DataContext.TestShapeCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             <Button Content="+m" Grid.Column="0" HorizontalAlignment="Left"  Grid.Row="4" Width="34" Height="24" Click="Button_Click_1"/>
 
             <!--<Expander Grid.Row="4" Header="Add" ExpandDirection="Right" IsExpanded="False"
