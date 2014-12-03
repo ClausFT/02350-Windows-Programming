@@ -40,7 +40,6 @@ namespace Windows_Programming.ViewModel
             openFileDialog.Title = "Select an Xml file";
             openFileDialog.ShowDialog();
 
-            //using (FileStream readFileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (FileStream readFileStream = (FileStream)openFileDialog.OpenFile())
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Diagram));

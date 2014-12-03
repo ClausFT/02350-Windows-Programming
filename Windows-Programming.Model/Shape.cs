@@ -96,9 +96,10 @@ namespace Windows_Programming.Model
         // By overwriting the ToString() method, the default representation of the class is changed from the full namespace (Java: package) name, 
         //  to the value of the Number integer property, which is meant to be unique for each Shape object.
         // The ToString() method is inheritied from the Object class, that all classes inherit from.
-        public override string ToString()
-        {
-            return Number.ToString();
-        }
+
+        //public override string ToString()
+        //{
+        //    return Number.ToString();
+        //}
     }
 }
