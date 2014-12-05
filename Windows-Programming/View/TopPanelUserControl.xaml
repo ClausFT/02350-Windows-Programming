@@ -118,6 +118,20 @@
                                     </Grid>
                                 </Button.Content>
                             </Button>
+                            <Button Margin="1" Padding="2" HorizontalContentAlignment="Left"
+                            Style="{StaticResource ToolBarButtonBaseStyle}"
+                            Command="{Binding RemoveShapeCommand}">
+                                <Button.Content>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="Images/DeleteIcon.png" Width="16"/>
+                                        <TextBlock Margin="3,0,3,0" Text="Delete" VerticalAlignment="Center" Grid.Column="1"/>
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
