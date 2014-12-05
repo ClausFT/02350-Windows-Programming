@@ -20,6 +20,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Windows_Programming.Command;
 
+
+
 namespace Windows_Programming.ViewModel
 {
     public class MainViewModel : ViewModelBase
@@ -139,10 +141,31 @@ namespace Windows_Programming.ViewModel
         {
             Diagram diagram;
             diagram = saveLoadController.Load();
+            Console.Out.WriteLine(diagram);
             Shapes = new ObservableCollection<Shape>(diagram.shapes);
-            Lines = new ObservableCollection<Line>(diagram.lines);  
-            foreach (Line element in Lines)
-                element.SetShortestLine();
+            RaisePropertyChanged("Shapes");
+            Lines = new ObservableCollection<Line>(diagram.lines);
+
+            //Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
+            foreach (Line line in Lines)
+            {
+                foreach (Shape shape in Shapes)
+                {
+                    if (shape.Number == line.FromID)
+                    {
+                        line.From = shape;
+                    }
+                }
+                foreach (Shape shape in Shapes)
+                {
+                    if (shape.Number == line.ToID)
+                    {
+                        line.To = shape;
+                    }
+                }
+
+            }
+            RaisePropertyChanged("Lines");
 
         }
         // Adds a Shape with an AddShapeCommand.
