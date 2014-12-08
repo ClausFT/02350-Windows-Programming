@@ -23,13 +23,30 @@ namespace Windows_Programming.Model
         [XmlIgnore]
         public Shape From { get { return from; } set { from = value; NotifyPropertyChanged("From"); } }
         private int fromID;
-        public int FromID { get { return from.Number; } set { from.Number = value; } }
+        public int FromID { 
+            get {
+                if (from != null)
+                    return from.Number;
+                return fromID;
+            } 
+            set { 
+                fromID = value; 
+            } 
+        }
 
         private Shape to;
         [XmlIgnore]
         public Shape To { get { return to; } set { to = value; NotifyPropertyChanged("To"); } }
         private int toID;
-        public int ToID { get { return to.Number; } set { to.Number = value; } }
+        public int ToID { 
+            get {
+                if (to != null)
+                    return to.Number;
+                return toID; 
+            } set { 
+                toID = value; 
+            } 
+        }
 
         private int _fromX;
         public int FromX { get { return _fromX; } set { _fromX = value; NotifyPropertyChanged("FromX"); } }

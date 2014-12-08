@@ -20,6 +20,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Windows_Programming.Command;
+using System.Threading;
 
 
 
@@ -32,9 +33,12 @@ namespace Windows_Programming.ViewModel
         //Selected line for adding relation text
         private Line SelectedLine { get; set; }
         // A reference to the Undo/Redo controller.
-        private UndoRedoController undoRedoController = UndoRedoController.GetInstance();
+        //private UndoRedoController undoRedoController = new UndoRedoController();
         private SaveLoadController saveLoadController = new SaveLoadController();
 
+        public readonly Stack<IUndoRedoCommand> undoStack = new Stack<IUndoRedoCommand>();
+        // The Redo stack, holding the Undo/Redo commands that have been executed and then unexecuted (undone).
+        public readonly Stack<IUndoRedoCommand> redoStack = new Stack<IUndoRedoCommand>();
 
         // Keeps track of the state, depending on whether a line is being added or not.
         private bool _isAddingLine;
@@ -49,7 +53,7 @@ namespace Windows_Programming.ViewModel
 
         // Collections containing shapes and lines
         public ObservableCollection<Shape> Shapes { get; set; }
-        public static ObservableCollection<Line> Lines { get; set; }
+        public ObservableCollection<Line> Lines { get; set; }
 
 
         // Commands that the UI can be bound to.
@@ -83,8 +87,8 @@ namespace Windows_Programming.ViewModel
             Shapes = new ObservableCollection<Shape>();
             Lines = new ObservableCollection<Line>();
 
-            UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.CanUndo);
-            RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.CanRedo);
+            UndoCommand = new RelayCommand(Undo, CanUndo);
+            RedoCommand = new RelayCommand(Redo, CanRedo);
             SaveCommand = new RelayCommand(Save);
             LoadCommand = new RelayCommand(Load);
 
@@ -105,6 +109,56 @@ namespace Windows_Programming.ViewModel
             AddAttributeCommand = new RelayCommand<object>(AddAttribute);
             AddMethodCommand = new RelayCommand<object>(AddMethod);
         }
+        public void AddAndExecute(IUndoRedoCommand command)
+        {
+            undoStack.Push(command);
+            redoStack.Clear();
+            command.Execute();
+        }
+
+        public void Add(IUndoRedoCommand command)
+        {
+            undoStack.Push(command);
+            redoStack.Clear();
+        }
+        public bool CanUndo()
+        {
+            // Lambda expression to check that the 'undoStack' collection is not empty.
+            return undoStack.Any();
+            // This is equivalent to the following in Java (can also be done like this in .NET):
+
+            // return undoStack.Count > 0;
+        }
+        public void Undo()
+        {
+            if (!undoStack.Any()) throw new InvalidOperationException();
+            IUndoRedoCommand command = undoStack.Pop();
+            redoStack.Push(command);
+            command.UnExecute();
+
+            //Not so pretty hack for updating line positions when undoing
+            foreach (Line element in Lines)
+                element.SetShortestLine();
+        }
+        public bool CanRedo()
+        {
+            // Lambda expression to check that the 'redoStack' collection is not empty.
+            return redoStack.Any();
+            // This is equivalent to the following in Java (can also be done like this in .NET):
+
+            // return redoStack.Count > 0;
+        }
+        // Redoes the Undo/Redo command that was last unexecuted (undone), if possible.
+        public void Redo()
+        {
+            if (!redoStack.Any()) throw new InvalidOperationException();
+            IUndoRedoCommand command = redoStack.Pop();
+            undoStack.Push(command);
+            command.Execute();
+
+            foreach (Line element in Lines)
+                element.SetShortestLine();
+        }
 
         private void AddAttribute(object i)
         {
@@ -113,7 +167,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                undoRedoController.AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, ""));
+                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, ""));
         }
 
         private void AddMethod(object l)
@@ -123,7 +177,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                undoRedoController.AddAndExecute(new AddMethodCommand(shapeModel.Methods, ""));
+                AddAndExecute(new AddMethodCommand(shapeModel.Methods, ""));
             
             
             
@@ -138,12 +192,21 @@ namespace Windows_Programming.ViewModel
             diagram.shapes = Shapes.ToList();
             diagram.lines = Lines.ToList();
             saveLoadController.Save(diagram);
+            //Thread saveThread = new Thread(new ParameterizedThreadStart(saveLoadController.Save));
+            //saveThread.Start(diagram);
+            //while (!saveThread.IsAlive);
+            //Thread.Sleep(1);
+            //saveThread.Abort();
+            //saveThread.Join();
+
         }
 
         public void Load()
         {
             Diagram diagram;
             diagram = saveLoadController.Load();
+            if (diagram == null)
+                return;
             Console.Out.WriteLine(diagram);
             Shapes = new ObservableCollection<Shape>(diagram.shapes);
             RaisePropertyChanged("Shapes");
@@ -157,6 +220,7 @@ namespace Windows_Programming.ViewModel
                     if (shape.Number == line.FromID)
                     {
                         line.From = shape;
+                        break;
                     }
                 }
                 foreach (Shape shape in Shapes)
@@ -164,10 +228,16 @@ namespace Windows_Programming.ViewModel
                     if (shape.Number == line.ToID)
                     {
                         line.To = shape;
+                        break;
                     }
                 }
 
             }
+            RaisePropertyChanged("Lines");
+
+            foreach (Line element in Lines)
+                element.SetShortestLine();
+
             RaisePropertyChanged("Lines");
 
         }
@@ -175,7 +245,7 @@ namespace Windows_Programming.ViewModel
         public void AddShape()
         {
             RemoveLineFocus();
-            undoRedoController.AddAndExecute(new AddShapeCommand(Shapes, new Shape()));
+            AddAndExecute(new AddShapeCommand(Shapes, new Shape()));
         }
 
         // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
@@ -238,7 +308,7 @@ namespace Windows_Programming.ViewModel
         // Removes the chosen Lines with a RemoveLinesCommand.
         public void RemoveLines(IList _lines)
         {
-            undoRedoController.AddAndExecute(new RemoveLinesCommand(Lines, _lines.Cast<Line>().ToList()));
+            AddAndExecute(new RemoveLinesCommand(Lines, _lines.Cast<Line>().ToList()));
         }
 
         public void MouseDownShape(MouseButtonEventArgs e)
@@ -331,7 +401,7 @@ namespace Windows_Programming.ViewModel
                 else if (_addingLineFrom.Number != shape.Number)
                 {
                     Line line = new Line { From = _addingLineFrom, To = shape, Type = Type };
-                    undoRedoController.AddAndExecute(new AddLineCommand(Lines, line));
+                    AddAndExecute(new AddLineCommand(Lines, line));
                     RemoveLineFocus(); //If a line was selected, remove focus
                     line.SetShortestLine();
                     SetLineFocus(line);
@@ -344,13 +414,13 @@ namespace Windows_Programming.ViewModel
             {
                 IList _shapeToRemove = new ArrayList();
                 _shapeToRemove.Add(shape);
-                undoRedoController.AddAndExecute(new RemoveShapesCommand(Shapes, Lines, _shapeToRemove.Cast<Shape>().ToList()));
+                AddAndExecute(new RemoveShapesCommand(Shapes, Lines, _shapeToRemove.Cast<Shape>().ToList()));
             }
             else // Used for moving a Shape.
             {
                 Canvas canvas = FindParentOfType<Canvas>(shapeVisualElement); // Canvas holding the shapes visual element
                 Point mousePosition = Mouse.GetPosition(canvas); //Mouse position relative to the canvas is gotten here.
-                undoRedoController.AddAndExecute(new MoveShapeCommand(shape, (int)_moveShapePoint.X, (int)_moveShapePoint.Y, (int)mousePosition.X, (int)mousePosition.Y));
+                AddAndExecute(new MoveShapeCommand(shape, (int)_moveShapePoint.X, (int)_moveShapePoint.Y, (int)mousePosition.X, (int)mousePosition.Y));
                 _moveShapePoint = new Point();
                 e.MouseDevice.Target.ReleaseMouseCapture();
             }
