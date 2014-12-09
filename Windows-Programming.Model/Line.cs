@@ -50,10 +50,10 @@ namespace Windows_Programming.Model
         // Sets the coordinates to the shortest line between the two shapes
         public void SetShortestLine()
         {
-            int[,] coord = { { From.X, From.Y + From.Height, To.X, To.Y+1 }, //bottom-top
-                             { From.X, From.Y+1, To.X, To.Y + To.Height+1 }, //top-bottom
-                             { From.X + From.Width, From.Y, To.X+1, To.Y },  //right-left
-                             { From.X+1, From.Y, To.X + To.Width+1, To.Y } };  //left-right
+            int[,] coord = { { From.X, From.Y + From.Height, To.X, To.Y }, //bottom-top
+                             { From.X, From.Y, To.X, To.Y + To.Height }, //top-bottom
+                             { From.X + From.Width, From.Y, To.X, To.Y },  //right-left
+                             { From.X, From.Y, To.X + To.Width, To.Y } };  //left-right
 
             int widthUnit = From.Width / 25; //Split width in 25 pieces
             int heightUnit = From.Height / 25; //Split height in 25 pieces
@@ -115,6 +115,11 @@ namespace Windows_Programming.Model
             //Compute the new midpoint of the line
             Point p = Compute.MidPoint(new Point(FromX, FromY), new Point(ToX, ToY));
             TextMargin = new Thickness(p.X+2, p.Y+2, 0, 0);
+
+            //Debug.WriteLine("");
+            //Debug.WriteLine("LINE ## X1: " + x1 + " | Y1: " + y1 + " | X2: " + x2 + " | Y2: " + y2);
+            //Debug.WriteLine("SHAPEFROM ## X: " + From.X + " | Y: " + From.Y + " | Height: " + From.Height + " | Width: " + From.Width);
+            //Debug.WriteLine("SHAPETO ## X: " + To.X + " | Y: " + To.Y + " | Height: " + To.Height + " | Width: " + To.Width);
         }
     }
 }
