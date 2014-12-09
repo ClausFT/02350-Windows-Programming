@@ -16,6 +16,11 @@
                 <View:ShapeUserControl/>
             </Canvas>
         </DataTemplate>
+        <!--<DataTemplate DataType="{x:Type Model:InterfaceShape}">
+            <Canvas>
+                <View:InterfaceUserControl/>
+            </Canvas>
+        </DataTemplate>-->
         <!-- This Data Template tells the View (Window) how to visually show the Line class. -->
         <!-- This Visual description is defined in the 'EdgeUserControl'. -->
         <DataTemplate DataType="{x:Type Model:Line}">

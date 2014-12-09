@@ -55,12 +55,16 @@ namespace Windows_Programming.ViewModel
         public ObservableCollection<Shape> Shapes { get; set; }
         public ObservableCollection<Line> Lines { get; set; }
 
-
         // Commands that the UI can be bound to.
         public ICommand UndoCommand { get; private set; }
         public ICommand RedoCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand LoadCommand { get; private set; }
+
+        // for Interface
+
+        public ICommand AddInterfaceCommand { get; private set; }
+
 
         // Commands that the UI can be bound to.
         public ICommand AddShapeCommand { get; private set; }
@@ -95,6 +99,8 @@ namespace Windows_Programming.ViewModel
             AddShapeCommand = new RelayCommand(AddShape);
             RemoveShapeCommand = new RelayCommand(RemoveShape, CanRemoveShape);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
+
+            AddInterfaceCommand = new RelayCommand(AddInterface);
 
             AddAssociationCommand = new RelayCommand(AddAssociation, CanAddLine);
             AddInheritanceCommand = new RelayCommand(AddInheritance, CanAddLine);
@@ -167,7 +173,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, ""));
+                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ("")));
         }
 
         private void AddMethod(object l)
@@ -177,7 +183,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddMethodCommand(shapeModel.Methods, ""));
+                AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ("")));
             
             
             
@@ -209,6 +215,7 @@ namespace Windows_Programming.ViewModel
                 return;
             Console.Out.WriteLine(diagram);
             Shapes = new ObservableCollection<Shape>(diagram.shapes);
+
             RaisePropertyChanged("Shapes");
             Lines = new ObservableCollection<Line>(diagram.lines);
 
@@ -222,15 +229,23 @@ namespace Windows_Programming.ViewModel
                         line.From = shape;
                         break;
                     }
-                }
-                foreach (Shape shape in Shapes)
-                {
+
                     if (shape.Number == line.ToID)
                     {
                         line.To = shape;
                         break;
                     }
                 }
+
+
+                //foreach (Shape shape in Shapes)
+                //{
+                //    if (shape.Number == line.ToID)
+                //    {
+                //        line.To = shape;
+                //        break;
+                //    }
+                //}
 
             }
             RaisePropertyChanged("Lines");
@@ -266,6 +281,13 @@ namespace Windows_Programming.ViewModel
             _isRemovingShape = true;
             RaisePropertyChanged("ModeOpacity");
         }
+
+        public void AddInterface()
+        {
+            RemoveLineFocus();
+            AddAndExecute(new AddShapeCommand(Shapes, new Shape(ShapeType.interfaceShape)));
+        }
+
 
         public void AddAssociation()
         {

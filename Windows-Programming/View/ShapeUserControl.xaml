@@ -61,7 +61,7 @@
                 <ItemsControl ItemsSource="{Binding Propperties}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Path=Item, Mode=TwoWay}"/>
+                            <TextBox Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -71,14 +71,16 @@
                 <ItemsControl ItemsSource="{Binding Methods}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding Path=Item, Mode=TwoWay}"/>
+                            <TextBox Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
 
-            <TextBox Grid.Row="0" HorizontalContentAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" x:Name="ReadWriteTB" Width="auto" Text="{Binding Name}" FontWeight="Bold"  BorderThickness="0.2" BorderBrush="Black">
-            </TextBox>
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Label HorizontalContentAlignment="Center" Content="{Binding ShapeTypeName}" Margin="0,5,0,5"></Label>
+                <TextBox  HorizontalContentAlignment="Center"  x:Name="ReadWriteTB" Width="auto" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"  BorderThickness="0.2" BorderBrush="Black"></TextBox>
+            </StackPanel>            
 
             <Rectangle Height="2" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Fill="Red" Margin="0, 1" />
             <Rectangle Height="2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Width="140" Fill="Red" Margin="0, 1" />

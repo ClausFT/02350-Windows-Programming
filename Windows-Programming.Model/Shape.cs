@@ -8,12 +8,33 @@ using System.Windows.Media;
 
 namespace Windows_Programming.Model
 {
+
+    public class ShapeAttribute
+    {
+        public string Value { get; set; }
+        public ShapeAttribute(string value)
+        {
+            Value = value;
+        }
+
+    }
+
+
+
     // The Shape class descripes a shape with a position (X and Y), and a size (Width and Height).
     public class Shape : NotifyBase
     {
+        public string ShapeTypeName { get; set; }
 
-        public ObservableCollection<string> Propperties { get; set; }
-        public ObservableCollection<string> Methods { get; set; }
+        public ObservableCollection<ShapeAttribute> Propperties { get; set; }
+        public ObservableCollection<ShapeAttribute> Methods { get; set; }
+
+        private string name = "class1";
+        public string Name
+        {
+            get { return name; }
+            set { name = value; NotifyPropertyChanged("Name"); }
+        }
         
         // The static integer counter field is used to set the integer Number property to a unique number for each Shape object.
         private static int counter = 0;
@@ -75,8 +96,21 @@ namespace Windows_Programming.Model
 
         // Constructor.
         // The constructor is in this case used to set the default values for the properties.
-        public Shape()
+        
+        
+
+        public Shape(ShapeType shapeType= Model.ShapeType.classShape)
         {
+            switch(shapeType)
+            {
+                case Model.ShapeType.classShape:
+                    ShapeTypeName = "Class";
+                    break;
+
+                case Model.ShapeType.interfaceShape:
+                    ShapeTypeName = "Interface";
+                    break;
+            }
             // This just means that the integer field called counter is incremented before its value is used to set the Number integer property.
             Number = ++counter;
             X = Y = 0;
@@ -89,8 +123,8 @@ namespace Windows_Programming.Model
             // Width = 200;
             // Height = 200;
 
-            Methods = new ObservableCollection<string>();
-            Propperties = new ObservableCollection<string>();
+            Methods = new ObservableCollection<ShapeAttribute>();
+            Propperties = new ObservableCollection<ShapeAttribute>();
         }
 
         // By overwriting the ToString() method, the default representation of the class is changed from the full namespace (Java: package) name, 
@@ -102,4 +136,12 @@ namespace Windows_Programming.Model
         //    return Number.ToString();
         //}
     }
+
+    public enum ShapeType
+    {
+        classShape,
+        interfaceShape,
+    }
+
+
 }

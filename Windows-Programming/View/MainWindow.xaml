@@ -32,6 +32,8 @@
             
             <ItemsControl ItemsSource="{Binding Lines}"/>
             <ItemsControl ItemsSource="{Binding Shapes}"/>
+            <ItemsControl ItemsSource="{Binding Interfaces}"/>
+
         </Grid>
     </StackPanel>
 </Window>

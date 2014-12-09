@@ -148,14 +148,14 @@
                                         <RowDefinition Height="4*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-                                    <Image Source="Images/ClassIcon.png" Width="45"/>
+                                    <Image Source="Images/ClassIcon.png" Width="45" Height="45" VerticalAlignment="Bottom"/>
                                     <TextBlock Grid.Row="1" Text="Class" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                                 </Grid>
                             </Button.Content>
                         </Button>
                         <Button Margin="3" Width="55" Style="{StaticResource ToolBarButtonBaseStyle}"
                         HorizontalContentAlignment="Center"
-                        Command="">
+                        Command="{Binding AddInterfaceCommand}">
                             <Button.Content>
                                 <Grid>
                                     <Grid.RowDefinitions>

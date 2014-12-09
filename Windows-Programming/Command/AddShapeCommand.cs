@@ -44,6 +44,39 @@ namespace Windows_Programming.Command
         }
     }
 
+
+    //public class AddInterfaceCommand: IUndoRedoCommand
+    //{
+    //    private ObservableCollection<InterfaceShape> interfaceList;
+    //    // The 'shape' field holds a new shape, that is added to the 'shapes' collection, 
+    //    //  and if undone, it is removed from the collection.
+    //    private Shape currentInterface;
+
+    //    // Constructor for saving and changing the current state of the diagram 
+    //    //  (or at least the relevant parts).
+    //    public AddInterfaceCommand(ObservableCollection<InterfaceShape> _shapes, InterfaceShape _shape)
+    //    {
+    //        interfaceList = _shapes;
+    //        currentInterface = _shape;
+    //    }
+
+    //    // Methods.
+    //    // This method is for doing and redoing the command.
+    //    public void Execute()
+    //    {
+    //        interfaceList.Add(currentInterface);
+    //    }
+
+    //    // This method is for undoing the command.
+    //    public void UnExecute()
+    //    {
+    //        interfaceList.Remove(currentInterface);
+    //    }
+    //}
+
+
+
+    
     // Undo/Redo command for adding a Shape.
     public class AddAttributeCommand : IUndoRedoCommand //TODO: Make AddMethodCommand
     {
@@ -53,14 +86,14 @@ namespace Windows_Programming.Command
         //  therefore when this collection is changed in a object of this class, 
         //  it also changes the collection that the MainViewModel uses.
         // For a description of an ObservableCollection see the MainViewModel class.
-        private ObservableCollection<string> _attributes;
+        private ObservableCollection<ShapeAttribute> _attributes;
         // The 'shape' field holds a new shape, that is added to the 'shapes' collection, 
         //  and if undone, it is removed from the collection.
-        private string _attribute;
+        private ShapeAttribute _attribute;
 
         // Constructor for saving and changing the current state of the diagram 
         //  (or at least the relevant parts).
-        public AddAttributeCommand(ObservableCollection<string> attributes, string attribute)
+        public AddAttributeCommand(ObservableCollection<ShapeAttribute> attributes, ShapeAttribute attribute)
         {
             _attributes = attributes;
             _attribute = attribute;
@@ -89,14 +122,14 @@ namespace Windows_Programming.Command
         //  therefore when this collection is changed in a object of this class, 
         //  it also changes the collection that the MainViewModel uses.
         // For a description of an ObservableCollection see the MainViewModel class.
-        private ObservableCollection<string> _methods;
+        private ObservableCollection<ShapeAttribute> _methods;
         // The 'shape' field holds a new shape, that is added to the 'shapes' collection, 
         //  and if undone, it is removed from the collection.
-        private string _method;
+        private ShapeAttribute _method;
 
         // Constructor for saving and changing the current state of the diagram 
         //  (or at least the relevant parts).
-        public AddMethodCommand(ObservableCollection<string> methods, string method)
+        public AddMethodCommand(ObservableCollection<ShapeAttribute> methods, ShapeAttribute method)
         {
             _methods = methods;
             _method = method;
