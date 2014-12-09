@@ -14,13 +14,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Windows_Programming.Command;
-using System.Threading;
 
 
 
@@ -34,7 +32,6 @@ namespace Windows_Programming.ViewModel
         private Line SelectedLine { get; set; }
         // A reference to the Undo/Redo controller.
         //private UndoRedoController undoRedoController = new UndoRedoController();
-        private SaveLoadController saveLoadController = new SaveLoadController();
 
         public readonly Stack<IUndoRedoCommand> undoStack = new Stack<IUndoRedoCommand>();
         // The Redo stack, holding the Undo/Redo commands that have been executed and then unexecuted (undone).
@@ -123,11 +120,7 @@ namespace Windows_Programming.ViewModel
         }
         public bool CanUndo()
         {
-            // Lambda expression to check that the 'undoStack' collection is not empty.
             return undoStack.Any();
-            // This is equivalent to the following in Java (can also be done like this in .NET):
-
-            // return undoStack.Count > 0;
         }
         public void Undo()
         {
@@ -136,19 +129,13 @@ namespace Windows_Programming.ViewModel
             redoStack.Push(command);
             command.UnExecute();
 
-            //Not so pretty hack for updating line positions when undoing
             foreach (Line element in Lines)
                 element.SetShortestLine();
         }
         public bool CanRedo()
         {
-            // Lambda expression to check that the 'redoStack' collection is not empty.
             return redoStack.Any();
-            // This is equivalent to the following in Java (can also be done like this in .NET):
-
-            // return redoStack.Count > 0;
         }
-        // Redoes the Undo/Redo command that was last unexecuted (undone), if possible.
         public void Redo()
         {
             if (!redoStack.Any()) throw new InvalidOperationException();
@@ -188,21 +175,16 @@ namespace Windows_Programming.ViewModel
 
         public void Save()
         {
+            SaveLoadController saveLoadController = new SaveLoadController();
             Diagram diagram = new Diagram();
             diagram.shapes = Shapes.ToList();
             diagram.lines = Lines.ToList();
             saveLoadController.Save(diagram);
-            //Thread saveThread = new Thread(new ParameterizedThreadStart(saveLoadController.Save));
-            //saveThread.Start(diagram);
-            //while (!saveThread.IsAlive);
-            //Thread.Sleep(1);
-            //saveThread.Abort();
-            //saveThread.Join();
-
         }
 
         public void Load()
         {
+            SaveLoadController saveLoadController = new SaveLoadController();
             Diagram diagram;
             diagram = saveLoadController.Load();
             if (diagram == null)
