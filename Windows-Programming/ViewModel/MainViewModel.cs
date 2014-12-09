@@ -64,7 +64,7 @@ namespace Windows_Programming.ViewModel
 
 
         // Commands that the UI can be bound to.
-        public ICommand AddShapeCommand { get; private set; }
+        public ICommand AddClassCommand { get; private set; }
         public ICommand RemoveShapeCommand { get; private set; }
         public ICommand RemoveLinesCommand { get; private set; }
 
@@ -93,11 +93,11 @@ namespace Windows_Programming.ViewModel
             SaveCommand = new RelayCommand(Save);
             LoadCommand = new RelayCommand(Load);
 
-            AddShapeCommand = new RelayCommand(AddShape);
+            AddClassCommand = new RelayCommand(AddClass);
+            AddInterfaceCommand = new RelayCommand(AddInterface);
             RemoveShapeCommand = new RelayCommand(RemoveShape, CanRemoveShape);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
 
-            AddInterfaceCommand = new RelayCommand(AddInterface);
 
             AddAssociationCommand = new RelayCommand(AddAssociation, CanAddLine);
             AddInheritanceCommand = new RelayCommand(AddInheritance, CanAddLine);
@@ -160,7 +160,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ("")));
+                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ()));
         }
 
         private void AddMethod(object l)
@@ -170,7 +170,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ("")));
+                AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ()));
             
             
             
@@ -201,48 +201,24 @@ namespace Windows_Programming.ViewModel
             RaisePropertyChanged("Shapes");
             Lines = new ObservableCollection<Line>(diagram.lines);
 
-            //Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
-            foreach (Line line in Lines)
-            {
-                foreach (Shape shape in Shapes)
-                {
-                    if (shape.Number == line.FromID)
-                    {
-                        line.From = shape;
-                        break;
-                    }
-
-                    if (shape.Number == line.ToID)
-                    {
-                        line.To = shape;
-                        break;
-                    }
-                }
-
-
-                //foreach (Shape shape in Shapes)
-                //{
-                //    if (shape.Number == line.ToID)
-                //    {
-                //        line.To = shape;
-                //        break;
-                //    }
-                //}
-
-            }
+            Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
             RaisePropertyChanged("Lines");
-
-            foreach (Line element in Lines)
-                element.SetShortestLine();
-
-            RaisePropertyChanged("Lines");
-
         }
+
         // Adds a Shape with an AddShapeCommand.
-        public void AddShape()
+        public void AddClass()
         {
             RemoveLineFocus();
-            AddAndExecute(new AddShapeCommand(Shapes, new Shape()));
+            Shape klass = new Shape();
+            klass.shapeType = ShapeType.classShape;
+            AddAndExecute(new AddShapeCommand(Shapes, klass));
+        }
+        public void AddInterface()
+        {
+            RemoveLineFocus();
+            Shape interf = new Shape();
+            interf.shapeType = ShapeType.interfaceShape;
+            AddAndExecute(new AddShapeCommand(Shapes, interf));//ShapeType.interfaceShape)));
         }
 
         // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
@@ -264,11 +240,6 @@ namespace Windows_Programming.ViewModel
             RaisePropertyChanged("ModeOpacity");
         }
 
-        public void AddInterface()
-        {
-            RemoveLineFocus();
-            AddAndExecute(new AddShapeCommand(Shapes, new Shape(ShapeType.interfaceShape)));
-        }
 
 
         public void AddAssociation()

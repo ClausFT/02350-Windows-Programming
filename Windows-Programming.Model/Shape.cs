@@ -12,11 +12,6 @@ namespace Windows_Programming.Model
     public class ShapeAttribute
     {
         public string Value { get; set; }
-        public ShapeAttribute(string value)
-        {
-            Value = value;
-        }
-
     }
 
 
@@ -25,7 +20,7 @@ namespace Windows_Programming.Model
     public class Shape : NotifyBase
     {
         public string ShapeTypeName { get; set; }
-
+        public ShapeType shapeType { get; set; }
         public ObservableCollection<ShapeAttribute> Propperties { get; set; }
         public ObservableCollection<ShapeAttribute> Methods { get; set; }
 
@@ -99,9 +94,9 @@ namespace Windows_Programming.Model
         
         
 
-        public Shape(ShapeType shapeType= Model.ShapeType.classShape)
+        public Shape()//ShapeType shapeType= Model.ShapeType.classShape)
         {
-            switch(shapeType)
+            switch (shapeType)
             {
                 case Model.ShapeType.classShape:
                     ShapeTypeName = "Class";
