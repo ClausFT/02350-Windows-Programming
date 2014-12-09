@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows_Programming.Model;
+using System.Threading.Tasks;
 
 namespace Windows_Programming.ViewModel
 {
@@ -20,15 +21,22 @@ namespace Windows_Programming.ViewModel
             saveFileDialog.Filter = "Xml file|*.xml";
             saveFileDialog.Title = "Save a file ";
             saveFileDialog.ShowDialog();
+            Task taskA = new Task(() => SaveThread(saveFileDialog, data));
+            taskA.Start();
+        }
+
+        public void SaveThread<T>(SaveFileDialog saveFileDialog, T data)
+        {
 
             if (saveFileDialog.FileName != "")
             {
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
                 using (FileStream fileStream = (FileStream)saveFileDialog.OpenFile())
-               {
-                   XmlSerializer serializer = new XmlSerializer(typeof(T));
-                   serializer.Serialize(fileStream, data);
-               }
-           }
+                {
+                    serializer.Serialize(fileStream, data);
+                }
+            }
+
         }
 
         public Diagram Load()
@@ -42,14 +50,14 @@ namespace Windows_Programming.ViewModel
                 {
                 
                         XmlSerializer serializer = new XmlSerializer(typeof(Diagram));
-                        Diagram LoadedObj = (Diagram)serializer.Deserialize(readFileStream);
+                        Diagram diagram = (Diagram)serializer.Deserialize(readFileStream);
 
                         readFileStream.Close();
-                        return LoadedObj;
+                        return diagram;
                 
                 }
             }
-            catch(Exception){ //If there is any exception it should return null so that the command can handle it
+            catch(InvalidOperationException){ //If there is any exception it should return null so that the command can handle it
                 return null;
             }
         }
