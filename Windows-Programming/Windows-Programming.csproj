@@ -74,7 +74,6 @@
     <Compile Include="Command\MoveShapeCommand.cs" />
     <Compile Include="Command\RemoveLinesCommand.cs" />
     <Compile Include="Command\RemoveShapesCommand.cs" />
-    <Compile Include="Command\UndoRedoController.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SaveLoadController.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

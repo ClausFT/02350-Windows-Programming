@@ -13,6 +13,7 @@ namespace Windows_Programming.ViewModel
 {
     public class SaveLoadController
     {
+
         public void Save<T>(T data)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -20,11 +21,8 @@ namespace Windows_Programming.ViewModel
             saveFileDialog.Title = "Save a file ";
             saveFileDialog.ShowDialog();
 
-            // If the file name is not an empty string open it for saving.
             if (saveFileDialog.FileName != "")
             {
-
-                //using (FileStream fileStream = File.Create(path))
                 using (FileStream fileStream = (FileStream)saveFileDialog.OpenFile())
                {
                    XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -39,18 +37,21 @@ namespace Windows_Programming.ViewModel
             openFileDialog.Filter = "Xml Files|*.xml";
             openFileDialog.Title = "Select an Xml file";
             openFileDialog.ShowDialog();
+            try{
+                using (FileStream readFileStream = (FileStream)openFileDialog.OpenFile())
+                {
+                
+                        XmlSerializer serializer = new XmlSerializer(typeof(Diagram));
+                        Diagram LoadedObj = (Diagram)serializer.Deserialize(readFileStream);
 
-            //using (FileStream readFileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (FileStream readFileStream = (FileStream)openFileDialog.OpenFile())
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(Diagram));
-                Diagram LoadedObj = (Diagram)serializer.Deserialize(readFileStream);
-
-                readFileStream.Close();
-                return LoadedObj;
+                        readFileStream.Close();
+                        return LoadedObj;
+                
+                }
             }
-
-             //return null;
+            catch(Exception){ //If there is any exception it should return null so that the command can handle it
+                return null;
+            }
         }
     }
 }
