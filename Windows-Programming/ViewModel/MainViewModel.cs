@@ -211,6 +211,7 @@ namespace Windows_Programming.ViewModel
             RemoveLineFocus();
             Shape klass = new Shape();
             klass.ShapeType = ShapeType.classShape;
+            klass.ShapeTypeName = "Class";
             AddAndExecute(new AddShapeCommand(Shapes, klass));
         }
 
