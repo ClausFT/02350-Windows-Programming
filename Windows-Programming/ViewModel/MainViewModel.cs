@@ -158,9 +158,14 @@ namespace Windows_Programming.ViewModel
             FrameworkElement shapeVisualElement = (FrameworkElement)i;
             // From the shapes visual element, the Shape object which is the DataContext is retrieved.
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
-
             if (shapeModel != null)
                 AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ("")));
+
+            if (shapeModel.Propperties.Count > 1)
+                shapeModel.Height += 22;
+
+            foreach (Line element in Lines)
+                element.SetShortestLine();
         }
 
         private void AddMethod(object l)
@@ -169,11 +174,16 @@ namespace Windows_Programming.ViewModel
             FrameworkElement shapeVisualElement = (FrameworkElement)l;
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
+
             if (shapeModel != null)
                 AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ("")));
-            
-            
-            
+
+            if (shapeModel.Methods.Count > 1)
+                shapeModel.Height += 22;
+
+            foreach (Line element in Lines)
+                element.SetShortestLine();
+
             //MethodPanel.Children.Add(new TextBox());
         }
 

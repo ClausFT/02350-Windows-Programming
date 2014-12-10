@@ -117,8 +117,8 @@ namespace Windows_Programming.Model
             // The "X = Y = value" syntax corresponds to the following:
             // X = 200;
             // Y = 200;
-            Width = 145;
-            Height = 124;
+            Width = 144;
+            Height = 132;
             // The "Width = Height = value" syntax corresponds to the following:
             // Width = 200;
             // Height = 200;

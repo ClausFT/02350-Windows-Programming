@@ -74,10 +74,10 @@ namespace Windows_Programming.Model
         // Sets the coordinates to the shortest line between the two shapes
         public void SetShortestLine()
         {
-            int[,] coord = { { From.X, From.Y + From.Height, To.X, To.Y+1 }, //bottom-top
-                             { From.X, From.Y+1, To.X, To.Y + To.Height+1 }, //top-bottom
-                             { From.X + From.Width, From.Y, To.X+1, To.Y },  //right-left
-                             { From.X+1, From.Y, To.X + To.Width+1, To.Y } };  //left-right
+            int[,] coord = { { From.X, From.Y + From.Height, To.X, To.Y }, //bottom-top
+                             { From.X, From.Y, To.X, To.Y + To.Height }, //top-bottom
+                             { From.X + From.Width, From.Y, To.X, To.Y },  //right-left
+                             { From.X, From.Y, To.X + To.Width, To.Y } };  //left-right
 
             int widthUnit = From.Width / 25; //Split width in 25 pieces
             int heightUnit = From.Height / 25; //Split height in 25 pieces
