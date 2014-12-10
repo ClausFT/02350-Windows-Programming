@@ -202,40 +202,7 @@ namespace Windows_Programming.ViewModel
             Lines = new ObservableCollection<Line>(diagram.lines);
 
             Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
-            //foreach (Line line in Lines)
-            //{
-            //    foreach (Shape shape in Shapes)
-            //    {
-            //        if (shape.Number == line.FromID)
-            //        {
-            //            line.From = shape;
-            //            break;
-            //        }
-
-            //        if (shape.Number == line.ToID)
-            //        {
-            //            line.To = shape;
-            //            break;
-            //        }
-            //    }
-
-
-            //    //foreach (Shape shape in Shapes)
-            //    //{
-            //    //    if (shape.Number == line.ToID)
-            //    //    {
-            //    //        line.To = shape;
-            //    //        break;
-            //    //    }
-            //    //}
-
-            //}
             RaisePropertyChanged("Lines");
-
-            //foreach (Line element in Lines)
-            //    element.SetShortestLine();
-
-            //RaisePropertyChanged("Lines");
 
         }
         // Adds a Shape with an AddShapeCommand.
@@ -244,7 +211,6 @@ namespace Windows_Programming.ViewModel
             RemoveLineFocus();
             Shape klass = new Shape();
             klass.ShapeType = ShapeType.classShape;
-            klass.ShapeTypeName = "Class";
             AddAndExecute(new AddShapeCommand(Shapes, klass));
         }
 
