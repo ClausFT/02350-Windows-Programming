@@ -160,7 +160,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ("")));
+                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ()));
         }
 
         private void AddMethod(object l)
@@ -170,7 +170,7 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ("")));
+                AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ()));
             
             
             
@@ -201,48 +201,51 @@ namespace Windows_Programming.ViewModel
             RaisePropertyChanged("Shapes");
             Lines = new ObservableCollection<Line>(diagram.lines);
 
-            //Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
-            foreach (Line line in Lines)
-            {
-                foreach (Shape shape in Shapes)
-                {
-                    if (shape.Number == line.FromID)
-                    {
-                        line.From = shape;
-                        break;
-                    }
+            Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
+            //foreach (Line line in Lines)
+            //{
+            //    foreach (Shape shape in Shapes)
+            //    {
+            //        if (shape.Number == line.FromID)
+            //        {
+            //            line.From = shape;
+            //            break;
+            //        }
 
-                    if (shape.Number == line.ToID)
-                    {
-                        line.To = shape;
-                        break;
-                    }
-                }
+            //        if (shape.Number == line.ToID)
+            //        {
+            //            line.To = shape;
+            //            break;
+            //        }
+            //    }
 
 
-                //foreach (Shape shape in Shapes)
-                //{
-                //    if (shape.Number == line.ToID)
-                //    {
-                //        line.To = shape;
-                //        break;
-                //    }
-                //}
+            //    //foreach (Shape shape in Shapes)
+            //    //{
+            //    //    if (shape.Number == line.ToID)
+            //    //    {
+            //    //        line.To = shape;
+            //    //        break;
+            //    //    }
+            //    //}
 
-            }
+            //}
             RaisePropertyChanged("Lines");
 
-            foreach (Line element in Lines)
-                element.SetShortestLine();
+            //foreach (Line element in Lines)
+            //    element.SetShortestLine();
 
-            RaisePropertyChanged("Lines");
+            //RaisePropertyChanged("Lines");
 
         }
         // Adds a Shape with an AddShapeCommand.
         public void AddShape()
         {
             RemoveLineFocus();
-            AddAndExecute(new AddShapeCommand(Shapes, new Shape()));
+            Shape klass = new Shape();
+            klass.ShapeType = ShapeType.classShape;
+            klass.ShapeTypeName = "Class";
+            AddAndExecute(new AddShapeCommand(Shapes, klass));
         }
 
         // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
@@ -267,7 +270,10 @@ namespace Windows_Programming.ViewModel
         public void AddInterface()
         {
             RemoveLineFocus();
-            AddAndExecute(new AddShapeCommand(Shapes, new Shape(ShapeType.interfaceShape)));
+            Shape interf = new Shape();
+            interf.ShapeType = ShapeType.interfaceShape;
+            interf.ShapeTypeName = "Interface";
+            AddAndExecute(new AddShapeCommand(Shapes, interf));
         }
 
 
