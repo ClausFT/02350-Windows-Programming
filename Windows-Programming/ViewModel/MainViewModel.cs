@@ -33,9 +33,9 @@ namespace Windows_Programming.ViewModel
         // A reference to the Undo/Redo controller.
         //private UndoRedoController undoRedoController = new UndoRedoController();
 
-        public readonly Stack<IUndoRedoCommand> undoStack = new Stack<IUndoRedoCommand>();
+        private readonly Stack<IUndoRedoCommand> undoStack = new Stack<IUndoRedoCommand>();
         // The Redo stack, holding the Undo/Redo commands that have been executed and then unexecuted (undone).
-        public readonly Stack<IUndoRedoCommand> redoStack = new Stack<IUndoRedoCommand>();
+        private readonly Stack<IUndoRedoCommand> redoStack = new Stack<IUndoRedoCommand>();
 
         // Keeps track of the state, depending on whether a line is being added or not.
         private bool _isAddingLine;
