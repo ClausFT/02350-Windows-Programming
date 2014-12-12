@@ -33,9 +33,9 @@ namespace Windows_Programming.ViewModel
         // A reference to the Undo/Redo controller.
         //private UndoRedoController undoRedoController = new UndoRedoController();
 
-        private readonly Stack<IUndoRedoCommand> undoStack = new Stack<IUndoRedoCommand>();
+        public readonly Stack<IUndoRedoCommand> undoStack = new Stack<IUndoRedoCommand>();
         // The Redo stack, holding the Undo/Redo commands that have been executed and then unexecuted (undone).
-        private readonly Stack<IUndoRedoCommand> redoStack = new Stack<IUndoRedoCommand>();
+        public readonly Stack<IUndoRedoCommand> redoStack = new Stack<IUndoRedoCommand>();
 
         // Keeps track of the state, depending on whether a line is being added or not.
         private bool _isAddingLine;
@@ -64,7 +64,7 @@ namespace Windows_Programming.ViewModel
 
 
         // Commands that the UI can be bound to.
-        public ICommand AddClassCommand { get; private set; }
+        public ICommand AddShapeCommand { get; private set; }
         public ICommand RemoveShapeCommand { get; private set; }
         public ICommand RemoveLinesCommand { get; private set; }
 
@@ -93,11 +93,11 @@ namespace Windows_Programming.ViewModel
             SaveCommand = new RelayCommand(Save);
             LoadCommand = new RelayCommand(Load);
 
-            AddClassCommand = new RelayCommand(AddClass);
-            AddInterfaceCommand = new RelayCommand(AddInterface);
+            AddShapeCommand = new RelayCommand(AddShape);
             RemoveShapeCommand = new RelayCommand(RemoveShape, CanRemoveShape);
             RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
 
+            AddInterfaceCommand = new RelayCommand(AddInterface);
 
             AddAssociationCommand = new RelayCommand(AddAssociation, CanAddLine);
             AddInheritanceCommand = new RelayCommand(AddInheritance, CanAddLine);
@@ -203,22 +203,16 @@ namespace Windows_Programming.ViewModel
 
             Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
             RaisePropertyChanged("Lines");
-        }
 
+        }
         // Adds a Shape with an AddShapeCommand.
-        public void AddClass()
+        public void AddShape()
         {
             RemoveLineFocus();
             Shape klass = new Shape();
-            klass.shapeType = ShapeType.classShape;
+            klass.ShapeType = ShapeType.classShape;
+            klass.ShapeTypeName = "Class";
             AddAndExecute(new AddShapeCommand(Shapes, klass));
-        }
-        public void AddInterface()
-        {
-            RemoveLineFocus();
-            Shape interf = new Shape();
-            interf.shapeType = ShapeType.interfaceShape;
-            AddAndExecute(new AddShapeCommand(Shapes, interf));//ShapeType.interfaceShape)));
         }
 
         // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
@@ -240,6 +234,14 @@ namespace Windows_Programming.ViewModel
             RaisePropertyChanged("ModeOpacity");
         }
 
+        public void AddInterface()
+        {
+            RemoveLineFocus();
+            Shape interf = new Shape();
+            interf.ShapeType = ShapeType.interfaceShape;
+            interf.ShapeTypeName = "Interface";
+            AddAndExecute(new AddShapeCommand(Shapes, interf));
+        }
 
 
         public void AddAssociation()

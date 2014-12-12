@@ -20,7 +20,7 @@ namespace Windows_Programming.Model
     public class Shape : NotifyBase
     {
         public string ShapeTypeName { get; set; }
-        public ShapeType shapeType { get; set; }
+        public ShapeType ShapeType { get; set; }
         public ObservableCollection<ShapeAttribute> Propperties { get; set; }
         public ObservableCollection<ShapeAttribute> Methods { get; set; }
 
@@ -94,26 +94,16 @@ namespace Windows_Programming.Model
         
         
 
-        public Shape()//ShapeType shapeType= Model.ShapeType.classShape)
+        public Shape()
         {
-            switch (shapeType)
-            {
-                case Model.ShapeType.classShape:
-                    ShapeTypeName = "Class";
-                    break;
-
-                case Model.ShapeType.interfaceShape:
-                    ShapeTypeName = "Interface";
-                    break;
-            }
             // This just means that the integer field called counter is incremented before its value is used to set the Number integer property.
             Number = ++counter;
             X = Y = 0;
             // The "X = Y = value" syntax corresponds to the following:
             // X = 200;
             // Y = 200;
-            Width = 145;
-            Height = 124;
+            Width = 144;
+            Height = 132;
             // The "Width = Height = value" syntax corresponds to the following:
             // Width = 200;
             // Height = 200;
