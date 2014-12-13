@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows_Programming.Model;
-using System.Threading.Tasks;
 
 namespace Windows_Programming.ViewModel
 {
