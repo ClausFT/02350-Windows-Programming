@@ -132,9 +132,7 @@ namespace Windows_Programming.ViewModel
             IUndoRedoCommand command = undoStack.Pop();
             redoStack.Push(command);
             command.UnExecute();
-
-            foreach (Line element in Lines)
-                element.SetShortestLine();
+            UpdateLines();
         }
         public bool CanRedo()
         {
@@ -146,12 +144,12 @@ namespace Windows_Programming.ViewModel
             IUndoRedoCommand command = redoStack.Pop();
             undoStack.Push(command);
             command.Execute();
-            foreach (Line element in Lines)
-                element.SetShortestLine();
+            UpdateLines();
         }
 
         private void AddAttribute(object i)
         {
+            RemoveLineFocus();
             FrameworkElement shapeVisualElement = (FrameworkElement)i;
             // From the shapes visual element, the Shape object which is the DataContext is retrieved.
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
@@ -161,12 +159,7 @@ namespace Windows_Programming.ViewModel
                 ShapeAttribute shapeAttribute = new ShapeAttribute();
                 shapeAttribute.Shape = shapeModel;
                 AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, shapeAttribute));
-                if (shapeModel.Propperties.Count > 1)
-                {
-                    shapeModel.Height += 22;
-                    foreach (Line element in Lines)
-                        element.SetShortestLine();
-                }
+                UpdateLines();
             }
 
                     
@@ -174,7 +167,7 @@ namespace Windows_Programming.ViewModel
 
         private void AddMethod(object l)
         {
-
+            RemoveLineFocus();
             FrameworkElement shapeVisualElement = (FrameworkElement)l;
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
@@ -183,13 +176,7 @@ namespace Windows_Programming.ViewModel
                 ShapeAttribute shapeAttribute = new ShapeAttribute();
                 shapeAttribute.Shape = shapeModel;
                 AddAndExecute(new AddMethodCommand(shapeModel.Methods, shapeAttribute));
-
-                if (shapeModel.Methods.Count > 1)
-                {
-                    shapeModel.Height += 22;
-                    foreach (Line element in Lines)
-                        element.SetShortestLine();
-                }
+                UpdateLines();
             }
                
         }
@@ -313,6 +300,12 @@ namespace Windows_Programming.ViewModel
             RelationText = string.Empty;
         }
 
+        private void UpdateLines()
+        {
+            foreach (Line element in Lines)
+                element.SetShortestLine();
+        }
+
         private void SetLineFocus(Line line)
         {
             if (HasSelectedLine)
@@ -369,9 +362,7 @@ namespace Windows_Programming.ViewModel
             if (_moveShapePoint == default(Point)) _moveShapePoint = mousePosition;
             shapeModel.CanvasCenterX = (int)mousePosition.X;
             shapeModel.CanvasCenterY = (int)mousePosition.Y;
-
-            foreach (Line element in Lines)
-                element.SetShortestLine();
+            UpdateLines();
 
         }
 

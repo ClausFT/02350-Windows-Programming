@@ -104,6 +104,8 @@ namespace Windows_Programming.Command
         public void Execute()
         {
             _attributes.Add(_attribute);
+            if (_attribute.Shape.Propperties.Count > 1)
+                _attribute.Shape.Height += 22;
         }
 
         // This method is for undoing the command.
@@ -112,6 +114,7 @@ namespace Windows_Programming.Command
             _attributes.Remove(_attribute);
             if (_attribute.Shape.Propperties.Count > 0)
                 _attribute.Shape.Height -= 22;
+
         }   
     }
 
@@ -142,6 +145,8 @@ namespace Windows_Programming.Command
         public void Execute()
         {
             _methods.Add(_method);
+            if (_method.Shape.Methods.Count > 1)
+                _method.Shape.Height += 22;
         }
 
         // This method is for undoing the command.
