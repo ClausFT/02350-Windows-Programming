@@ -66,7 +66,6 @@ namespace Windows_Programming.ViewModel
         // Commands that the UI can be bound to.
         public ICommand AddShapeCommand { get; private set; }
         public ICommand RemoveShapeCommand { get; private set; }
-        public ICommand RemoveLinesCommand { get; private set; }
 
         public ICommand AddAssociationCommand { get; private set; }
         public ICommand AddInheritanceCommand { get; private set; }
@@ -95,7 +94,6 @@ namespace Windows_Programming.ViewModel
 
             AddShapeCommand = new RelayCommand(AddShape);
             RemoveShapeCommand = new RelayCommand(RemoveShape, CanRemoveShape);
-            RemoveLinesCommand = new RelayCommand<IList>(RemoveLines, CanRemoveLines);
 
             AddInterfaceCommand = new RelayCommand(AddInterface);
 
@@ -160,7 +158,19 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, new ShapeAttribute ()));
+            {
+                ShapeAttribute shapeAttribute = new ShapeAttribute();
+                shapeAttribute.Shape = shapeModel;
+                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, shapeAttribute));
+                if (shapeModel.Propperties.Count > 1)
+                {
+                    shapeModel.Height += 22;
+                    foreach (Line element in Lines)
+                        element.SetShortestLine();
+                }
+            }
+
+                    
         }
 
         private void AddMethod(object l)
@@ -170,11 +180,19 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext;
 
             if (shapeModel != null)
-                AddAndExecute(new AddMethodCommand(shapeModel.Methods,new ShapeAttribute ()));
-            
-            
-            
-            //MethodPanel.Children.Add(new TextBox());
+            {
+                ShapeAttribute shapeAttribute = new ShapeAttribute();
+                shapeAttribute.Shape = shapeModel;
+                AddAndExecute(new AddMethodCommand(shapeModel.Methods, shapeAttribute));
+
+                if (shapeModel.Methods.Count > 1)
+                {
+                    shapeModel.Height += 22;
+                    foreach (Line element in Lines)
+                        element.SetShortestLine();
+                }
+            }
+               
         }
 
 
@@ -280,12 +298,6 @@ namespace Windows_Programming.ViewModel
         public bool CanRemoveLines(IList _edges)
         {
             return _edges.Count >= 1;
-        }
-
-        // Removes the chosen Lines with a RemoveLinesCommand.
-        public void RemoveLines(IList _lines)
-        {
-            AddAndExecute(new RemoveLinesCommand(Lines, _lines.Cast<Line>().ToList()));
         }
 
         public void MouseDownShape(MouseButtonEventArgs e)

@@ -80,7 +80,8 @@ namespace Windows_Programming.Model
                              { From.X, From.Y, To.X + To.Width, To.Y } };  //left-right
 
             int widthUnit = From.Width / 25; //Split width in 25 pieces
-            int heightUnit = From.Height / 25; //Split height in 25 pieces
+            int heightUnit = To.Height / 25; //Split height in 25 pieces
+
             int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
             double minLength = -1; //Used to keep track of the shortest line calculated so far
             const int margin = 5;
@@ -114,7 +115,7 @@ namespace Windows_Programming.Model
             {
                 for (int k = margin; k < From.Height; k = k + heightUnit)
                 {
-                    for (int j = margin; j < From.Height; j = j + heightUnit)
+                    for (int j = margin; j < To.Height; j = j + heightUnit)
                     {
                         //Calculate the length of the line
                         double lineLength = Compute.LineLength(coord[i, 0], coord[i, 1] + k, coord[i, 2], coord[i, 3] + j);

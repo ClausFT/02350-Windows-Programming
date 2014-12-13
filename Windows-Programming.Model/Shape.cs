@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Serialization;
 
 namespace Windows_Programming.Model
 {
@@ -12,6 +13,8 @@ namespace Windows_Programming.Model
     public class ShapeAttribute
     {
         public string Value { get; set; }
+        [XmlIgnore]
+        public Shape Shape { get; set; }
     }
 
 
@@ -103,7 +106,7 @@ namespace Windows_Programming.Model
             // X = 200;
             // Y = 200;
             Width = 144;
-            Height = 132;
+            Height = 114;
             // The "Width = Height = value" syntax corresponds to the following:
             // Width = 200;
             // Height = 200;

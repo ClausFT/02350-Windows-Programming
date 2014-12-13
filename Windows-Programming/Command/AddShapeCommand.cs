@@ -110,7 +110,9 @@ namespace Windows_Programming.Command
         public void UnExecute()
         {
             _attributes.Remove(_attribute);
-        }
+            if (_attribute.Shape.Propperties.Count > 0)
+                _attribute.Shape.Height -= 22;
+        }   
     }
 
 
@@ -146,6 +148,8 @@ namespace Windows_Programming.Command
         public void UnExecute()
         {
             _methods.Remove(_method);
+            if (_method.Shape.Methods.Count > 0)
+                _method.Shape.Height -= 22;
         }
     }
 

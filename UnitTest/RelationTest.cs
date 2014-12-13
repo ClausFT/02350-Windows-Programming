@@ -68,7 +68,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestLineMitPointX()
+        public void TestLineMidPointX()
         {
             line.SetShortestLine();
             double expected = 441;
@@ -77,7 +77,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestLineMitPointY()
+        public void TestLineMidPointY()
         {
             line.SetShortestLine();
             double expected = 205.5;
