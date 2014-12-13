@@ -8,11 +8,6 @@
              xmlns:view="clr-namespace:Windows_Programming.View"
              mc:Ignorable="d" 
              d:DesignHeight="10" d:DesignWidth="10">
-    <!-- The 'Line' class is shown with a visual 'Line' control, just like in the 02350SuperSimpleDemo. -->
-    <!-- The important thing to understand is that the DataContext of this UserControl is a 'Line' object, -->
-    <!--  from the MainViewModels 'Lines' collection because this 'UserControl' is used by the ItemsCollection in the MainWindow, -->
-    <!--  and that ItemsCollection is bound to the MainViewModels 'Lines' collection. -->
-    
     <Canvas>
         <view:Relation X1="{Binding FromX}" Y1="{Binding FromY}" X2="{Binding ToX}" Y2="{Binding ToY}" Type="{Binding Type}" Stroke="Black" StrokeThickness="{Binding StrokeThickness}"/>
         <TextBlock Background="White" Text="{Binding Text}" Margin="{Binding TextMargin}" />

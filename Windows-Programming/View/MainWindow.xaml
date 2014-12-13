@@ -6,30 +6,17 @@
         xmlns:shapes="clr-namespace:Windows_Programming.Model"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="800 " Width="1000">
-    <!-- This is where you set the Data Context of the View (Window), which tells the WPF engine where to look for the properties used by the bindings. -->
-    <!-- The namespace of the MainViewModel class has to be specified above, this is important to remember, to avoid a lot of problems in getting bindings to work. -->
-    <!-- Also the namespaces (Java: packages) has to be defined, for the used classes that are not part of WPF, -->
-    <!--  meaning the classes you have created, just like it is done with Using (Java: Import) statements in the C# code.-->
+    
     <Window.DataContext>
         <ViewModel:MainViewModel />
     </Window.DataContext>
 
-    <!--Det du ser herunder er det eneste som er i dette vindue. Et panel til venstre og en grid med to ItemsControls til højre.-->
-    <!--ItemsControlsne viser elementerne de er bundet til ved hjælp af de datatemplates der er defineret ovenfor.-->
-    <!--Dette StackPanel organisere tingene fra højre til venstre på grund af orienteringen.-->
     <StackPanel Orientation="Vertical">
         <!--Her smides side panellets UserControl ind.-->
         <View:TopPanelUserControl Loaded="TopPanelUserControl_Loaded"/>
-        <!--Med dette grid smides indholdet af de 2 ItemsControls i hovedet på hinanden med kanterne forneden og punkterne foroven.-->
-        <!-- This creates a grid to the right in the StackPanel, with only 1 column and 1 row, but the Grid is necessary to put the 2 ItemsControls in the same area on top of each other -->
+        
+        
         <Grid>
-            
-        <!-- An ItemControl shows the objects of the property it is bound to. -->
-        <!-- The ItemControl does not know how to display these objects and will by default show them with a TextBlock containing the return value of the objects "ToString()" method.  -->
-        <!--  To override the visual presentation of the elements, Data Templates are used, which can be seen in the "app.xaml" file. -->
-        <!-- These ItemsControls are bound to the public Lines and Shapes properties of the MainViewModel class. -->
-        <!-- The order of the ItemsControls are important as the Lines will be shown first with the Shapes on top, try switching them. -->
-            
             <ItemsControl ItemsSource="{Binding Lines}"/>
             <ItemsControl ItemsSource="{Binding Shapes}"/>
 

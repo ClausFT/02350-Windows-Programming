@@ -7,9 +7,7 @@
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
              mc:Ignorable="d" 
              Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" MinWidth="140" Width="auto" MinHeight="102" Height="auto" BorderBrush="Black" BorderThickness="2">
-    <!--Denne grid bruges til at smide ting i oven på hinanden.-->
     <Grid>
-        <!--Andet lag er teksten "Vælg" + "med klik" fordelt over og under talteksten der kommer senere.-->
         <Grid Height="98" VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -23,7 +21,6 @@
         </Grid>
         <TextBlock Text="{Binding X}"></TextBlock>
         <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" RenderTransformOrigin="1,1" Margin="0,0,-0.4,0">
-            <!--Baggrundsfarven der er en gradient.-->
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="LightBlue" />
@@ -42,7 +39,6 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Rectangle>
-        <!--Det fjerde og øverste lag indholder punktets nummer, placeret i midten med TextAlignment og en grid.-->
 
         <Grid>
             <Grid.RowDefinitions>

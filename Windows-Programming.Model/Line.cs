@@ -140,7 +140,6 @@ namespace Windows_Programming.Model
             //Compute the new midpoint of the line
             Point p = Compute.MidPoint(new Point(FromX, FromY), new Point(ToX, ToY));
             TextMargin = new Thickness(p.X+2, p.Y+2, 0, 0);
-
         }
     }
 }
