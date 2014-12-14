@@ -16,7 +16,6 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-
         </Grid>
         <TextBlock Text="{Binding X}"></TextBlock>
         <Rectangle Opacity="{Binding DataContext.ModeOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" RenderTransformOrigin="1,1" Margin="0,0,-0.4,0">
@@ -73,7 +72,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                <Label HorizontalContentAlignment="Center" Content="{Binding ShapeTypeName}" VerticalAlignment="Bottom" Margin="0,12,0,0"></Label>
+                <Label HorizontalContentAlignment="Center" Background="#348CA9" Content="{Binding ShapeTypeName}" VerticalAlignment="Bottom" Margin="0,15,0,0" Padding="0,0,0,0"></Label>
                 <TextBox  HorizontalContentAlignment="Center"  x:Name="ReadWriteTB" Width="auto" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"  BorderThickness="0.2" BorderBrush="Black"></TextBox>
 
             </StackPanel>
