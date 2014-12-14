@@ -197,6 +197,13 @@ namespace Windows_Programming.ViewModel
 
         public void Load()
         {
+            if (Shapes.Count > 0)
+            {
+                if (System.Windows.Forms.MessageBox.Show("Are you sure you want to discard your current diagram?", "Confirm", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
+                {
+                    return;
+                }
+            }
             SaveLoadController saveLoadController = new SaveLoadController();
             Diagram diagram;
             diagram = saveLoadController.Load();
@@ -210,10 +217,16 @@ namespace Windows_Programming.ViewModel
 
             Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
             RaisePropertyChanged("Lines");
-
         }
         public void New()
         {
+            if (Shapes.Count > 0)
+            {
+                if (System.Windows.Forms.MessageBox.Show("Are you sure you want to discard your current diagram?", "Confirm", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
+                {
+                    return;
+                }
+            }
             Shapes = new ObservableCollection<Shape>();
             RaisePropertyChanged("Shapes");
             Lines = new ObservableCollection<Line>();
