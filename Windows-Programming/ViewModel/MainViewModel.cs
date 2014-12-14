@@ -442,6 +442,7 @@ namespace Windows_Programming.ViewModel
                 AddAndExecute(new MoveShapeCommand(shape, _initX, _initY, (int)mousePosition.X, (int)mousePosition.Y));
                 e.MouseDevice.Target.ReleaseMouseCapture();
             }
+            UpdateLines();
         }
 
         // Recursive method for finding the parent of a visual element of a certain type, 
