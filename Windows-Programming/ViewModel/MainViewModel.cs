@@ -20,8 +20,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Windows_Programming.Command;
 
-
-
 namespace Windows_Programming.ViewModel
 {
     public class MainViewModel : ViewModelBase
@@ -41,10 +39,11 @@ namespace Windows_Programming.ViewModel
         private bool _isAddingLine;
         private bool _isRemovingShape;
         private bool HasSelectedLine { get { return (SelectedLine != null); } }
+        //Saves initial position of a shape
+        private int _initX;
+        private int _initY;
         // Used for saving the shape that a line is drawn from, while it is being drawn.
         private Shape _addingLineFrom;
-        // Saves the initial point that the mouse has during a move operation.
-        private Point _moveShapePoint;
         // Used for making the shapes transparent when a new line is being added.
         public double ModeOpacity { get { return _isAddingLine || _isRemovingShape ? 0.4 : 1.0; } }
 
@@ -375,6 +374,10 @@ namespace Windows_Programming.ViewModel
         public void MouseDownShape(MouseButtonEventArgs e)
         {
             if (!_isAddingLine) e.MouseDevice.Target.CaptureMouse();
+            FrameworkElement shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            Shape shapeModel = (Shape)shapeVisualElement.DataContext; // Get shape element
+            _initX = shapeModel.CanvasCenterX;
+            _initY = shapeModel.CanvasCenterY;
         }
 
         // This is used for moving a Shape, and only if the mouse is already captured.
@@ -396,7 +399,6 @@ namespace Windows_Programming.ViewModel
             Shape shapeModel = (Shape)shapeVisualElement.DataContext; // Get shape element
             Canvas canvas = FindParentOfType<Canvas>(shapeVisualElement);
             Point mousePosition = Mouse.GetPosition(canvas);
-            if (_moveShapePoint == default(Point)) _moveShapePoint = mousePosition;
             shapeModel.CanvasCenterX = (int)mousePosition.X;
             shapeModel.CanvasCenterY = (int)mousePosition.Y;
             UpdateLines();
@@ -435,8 +437,9 @@ namespace Windows_Programming.ViewModel
             {
                 Canvas canvas = FindParentOfType<Canvas>(shapeVisualElement); // Canvas holding the shapes visual element
                 Point mousePosition = Mouse.GetPosition(canvas); //Mouse position relative to the canvas is gotten here.
-                AddAndExecute(new MoveShapeCommand(shape, (int)_moveShapePoint.X, (int)_moveShapePoint.Y, (int)mousePosition.X, (int)mousePosition.Y));
-                _moveShapePoint = new Point();
+
+
+                AddAndExecute(new MoveShapeCommand(shape, _initX, _initY, (int)mousePosition.X, (int)mousePosition.Y));
                 e.MouseDevice.Target.ReleaseMouseCapture();
             }
         }

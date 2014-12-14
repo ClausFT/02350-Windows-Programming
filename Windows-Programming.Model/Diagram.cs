@@ -9,7 +9,6 @@ using System.Xml.Serialization;
 namespace Windows_Programming.Model
 {
 
-    [Serializable()]
     public class Diagram
     {
         public List<Shape> shapes { get; set; }

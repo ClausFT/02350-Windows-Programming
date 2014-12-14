@@ -42,8 +42,8 @@ namespace Windows_Programming.Model
         private int height;
         public int Height { get { return height; } set { height = value; NotifyPropertyChanged("Height"); NotifyPropertyChanged("CanvasCenterY"); NotifyPropertyChanged("CenterY"); } }
 
-        public int CanvasCenterX { get { return X + Width / 2; } set { X = value - Width / 2; NotifyPropertyChanged("X"); } }
-        public int CanvasCenterY { get { return Y + Height / 2; } set { Y = value - Height / 2; NotifyPropertyChanged("Y"); } }
+        public int CanvasCenterX { get { return X + Width / 2; } set { X = value - Width / 2; NotifyPropertyChanged("X"); NotifyPropertyChanged("CanvasCenterX"); } }
+        public int CanvasCenterY { get { return Y + Height / 2; } set { Y = value - Height / 2; NotifyPropertyChanged("Y"); NotifyPropertyChanged("CanvasCenterY"); } }
         public int CenterX { get { return Width / 2; } }
         public int CenterY { get { return Height / 2; } }
 
