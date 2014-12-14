@@ -20,21 +20,22 @@ namespace Windows_Programming.ViewModel
             saveFileDialog.Filter = "Xml file|*.xml";
             saveFileDialog.Title = "Save a file ";
             saveFileDialog.ShowDialog();
-            Task taskA = new Task(() => SaveThread(saveFileDialog, data));
-            taskA.Start();
+            if (saveFileDialog.FileName != "")
+            {
+                Task taskA = new Task(() => SaveThread(saveFileDialog, data));
+                taskA.Start();
+            }
         }
 
         public void SaveThread<T>(SaveFileDialog saveFileDialog, T data)
         {
 
-            if (saveFileDialog.FileName != "")
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(T));
-                using (FileStream fileStream = (FileStream)saveFileDialog.OpenFile())
-                {
-                    serializer.Serialize(fileStream, data);
-                }
-            }
+           XmlSerializer serializer = new XmlSerializer(typeof(T));
+           using (FileStream fileStream = (FileStream)saveFileDialog.OpenFile())
+           {
+              serializer.Serialize(fileStream, data);
+           }
+            
 
         }
 
@@ -51,7 +52,6 @@ namespace Windows_Programming.ViewModel
                         XmlSerializer serializer = new XmlSerializer(typeof(Diagram));
                         Diagram diagram = (Diagram)serializer.Deserialize(readFileStream);
 
-                        readFileStream.Close();
                         return diagram;
                 
                 }

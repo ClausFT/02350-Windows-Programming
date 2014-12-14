@@ -110,6 +110,7 @@ namespace Windows_Programming.ViewModel
             AddAttributeCommand = new RelayCommand<object>(AddAttribute);
             AddMethodCommand = new RelayCommand<object>(AddMethod);
         }
+
         public void AddAndExecute(IUndoRedoCommand command)
         {
             undoStack.Push(command);
@@ -158,7 +159,7 @@ namespace Windows_Programming.ViewModel
             {
                 ShapeAttribute shapeAttribute = new ShapeAttribute();
                 shapeAttribute.Shape = shapeModel;
-                AddAndExecute(new AddAttributeCommand(shapeModel.Propperties, shapeAttribute));
+                AddAndExecute(new AddAttributeCommand(shapeModel.Properties, shapeAttribute));
                 UpdateLines();
             }
 
@@ -199,7 +200,7 @@ namespace Windows_Programming.ViewModel
             diagram = saveLoadController.Load();
             if (diagram == null)
                 return;
-            Console.Out.WriteLine(diagram);
+
             Shapes = new ObservableCollection<Shape>(diagram.shapes);
 
             RaisePropertyChanged("Shapes");
@@ -214,7 +215,7 @@ namespace Windows_Programming.ViewModel
         {
             RemoveLineFocus();
             Shape klass = new Shape();
-            klass.ShapeType = ShapeType.classShape;
+            klass.ShapeType = ShapeTypes.Class;
             klass.ShapeTypeName = "Class";
             AddAndExecute(new AddShapeCommand(Shapes, klass));
         }
@@ -223,7 +224,7 @@ namespace Windows_Programming.ViewModel
         {
             RemoveLineFocus();
             Shape interf = new Shape();
-            interf.ShapeType = ShapeType.interfaceShape;
+            interf.ShapeType = ShapeTypes.Interface;
             interf.ShapeTypeName = "Interface";
             AddAndExecute(new AddShapeCommand(Shapes, interf));
         }

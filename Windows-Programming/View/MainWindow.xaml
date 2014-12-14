@@ -12,14 +12,13 @@
     </Window.DataContext>
 
     <StackPanel Orientation="Vertical">
-        <!--Her smides side panellets UserControl ind.-->
+
         <View:TopPanelUserControl Loaded="TopPanelUserControl_Loaded"/>
-        
         
         <Grid>
             <ItemsControl ItemsSource="{Binding Lines}"/>
             <ItemsControl ItemsSource="{Binding Shapes}"/>
-
         </Grid>
+        
     </StackPanel>
 </Window>

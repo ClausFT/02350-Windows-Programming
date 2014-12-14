@@ -68,7 +68,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\AddAttributeCommand.cs" />
     <Compile Include="Command\AddLineCommand.cs" />
+    <Compile Include="Command\AddMethodCommand.cs" />
     <Compile Include="Command\AddShapeCommand.cs" />
     <Compile Include="Command\IUndoRedoCommand.cs" />
     <Compile Include="Command\MoveShapeCommand.cs" />

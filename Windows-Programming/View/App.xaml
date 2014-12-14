@@ -5,30 +5,20 @@
              xmlns:View="clr-namespace:Windows_Programming.View"
              StartupUri="MainWindow.xaml">
 
-<!-- This is where resources are defines for alle windows to use. -->
     <Application.Resources>
-        <!-- This Data Template tells the View (Window) how to visually show the Shape class. -->
-        <!-- This Visual description is defined in the 'NodeUserControl'. -->
-        <!-- If you remove this template the Shape will be show with a TextBlock, that shows the return value of the "ToString()" method. -->
-        <!-- The Data Type tells the WPF engine, that this Data Template should be applied for the Shape class, in the Model namespace (Java: package). -->
+        
         <DataTemplate DataType="{x:Type Model:Shape}">
             <Canvas>
                 <View:ShapeUserControl/>
             </Canvas>
         </DataTemplate>
-        <!--<DataTemplate DataType="{x:Type Model:InterfaceShape}">
-            <Canvas>
-                <View:InterfaceUserControl/>
-            </Canvas>
-        </DataTemplate>-->
-        <!-- This Data Template tells the View (Window) how to visually show the Line class. -->
-        <!-- This Visual description is defined in the 'EdgeUserControl'. -->
+
         <DataTemplate DataType="{x:Type Model:Line}">
             <Canvas>
                 <View:RelationUserControl/>
             </Canvas>
         </DataTemplate>
-        <!-- This part defines how a button should look by default, in this application. -->
+
         <Style TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="False"/>
             <Setter Property="Margin" Value="4"/>
@@ -36,5 +26,6 @@
             <Setter Property="FontSize" Value="14px"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+        
     </Application.Resources>
 </Application>
