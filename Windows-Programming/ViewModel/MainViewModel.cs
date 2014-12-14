@@ -52,6 +52,8 @@ namespace Windows_Programming.ViewModel
         public ObservableCollection<Shape> Shapes { get; set; }
         public ObservableCollection<Line> Lines { get; set; }
 
+        #region Commands
+
         // Commands that the UI can be bound to.
         public ICommand UndoCommand { get; private set; }
         public ICommand RedoCommand { get; private set; }
@@ -82,6 +84,7 @@ namespace Windows_Programming.ViewModel
         public ICommand AddAttributeCommand { get; private set; }
         public ICommand AddMethodCommand { get; private set; }
 
+        #endregion
         
         public MainViewModel()
         {
@@ -115,8 +118,6 @@ namespace Windows_Programming.ViewModel
 
         #region Undo/redo controller
 
-
-        #endregion
         public void AddAndExecute(IUndoRedoCommand command)
         {
             undoStack.Push(command);
@@ -154,41 +155,9 @@ namespace Windows_Programming.ViewModel
             UpdateLines();
         }
 
-        private void AddAttribute(object i)
-        {
-            RemoveLineFocus();
-            FrameworkElement shapeVisualElement = (FrameworkElement)i;
-            // From the shapes visual element, the Shape object which is the DataContext is retrieved.
-            Shape shapeModel = (Shape)shapeVisualElement.DataContext;
+        #endregion
 
-            if (shapeModel != null)
-            {
-                ShapeAttribute shapeAttribute = new ShapeAttribute();
-                shapeAttribute.Shape = shapeModel;
-                AddAndExecute(new AddAttributeCommand(shapeModel.Properties, shapeAttribute));
-                UpdateLines();
-            }
-
-                    
-        }
-
-        private void AddMethod(object l)
-        {
-            RemoveLineFocus();
-            FrameworkElement shapeVisualElement = (FrameworkElement)l;
-            Shape shapeModel = (Shape)shapeVisualElement.DataContext;
-
-            if (shapeModel != null)
-            {
-                ShapeAttribute shapeAttribute = new ShapeAttribute();
-                shapeAttribute.Shape = shapeModel;
-                AddAndExecute(new AddMethodCommand(shapeModel.Methods, shapeAttribute));
-                UpdateLines();
-            }
-               
-        }
-
-
+        #region Save/load
 
         public void Save()
         {
@@ -223,6 +192,51 @@ namespace Windows_Programming.ViewModel
             Lines = new ObservableCollection<Line>();
             RaisePropertyChanged("Lines");
         }
+
+        #endregion
+
+        #region Shapes
+
+        // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
+        public bool CanRemoveShape()
+        {
+            return Shapes.Count > 0;
+        }
+
+        private void AddAttribute(object i)
+        {
+            RemoveLineFocus();
+            FrameworkElement shapeVisualElement = (FrameworkElement)i;
+            // From the shapes visual element, the Shape object which is the DataContext is retrieved.
+            Shape shapeModel = (Shape)shapeVisualElement.DataContext;
+
+            if (shapeModel != null)
+            {
+                ShapeAttribute shapeAttribute = new ShapeAttribute();
+                shapeAttribute.Shape = shapeModel;
+                AddAndExecute(new AddAttributeCommand(shapeModel.Properties, shapeAttribute));
+                UpdateLines();
+            }
+
+                    
+        }
+
+        private void AddMethod(object l)
+        {
+            RemoveLineFocus();
+            FrameworkElement shapeVisualElement = (FrameworkElement)l;
+            Shape shapeModel = (Shape)shapeVisualElement.DataContext;
+
+            if (shapeModel != null)
+            {
+                ShapeAttribute shapeAttribute = new ShapeAttribute();
+                shapeAttribute.Shape = shapeModel;
+                AddAndExecute(new AddMethodCommand(shapeModel.Methods, shapeAttribute));
+                UpdateLines();
+            }
+               
+        }
+
         // Adds a Class.
         public void AddClass()
         {
@@ -242,17 +256,6 @@ namespace Windows_Programming.ViewModel
             AddAndExecute(new AddShapeCommand(Shapes, interf));
         }
 
-        // Checks if the chosen Shapes can be removed, which they can if exactly 1 is chosen.
-        public bool CanRemoveShape()
-        {
-            return Shapes.Count > 0;
-        }
-
-        public bool CanAddLine()
-        {
-            return Shapes.Count > 1;
-        }
-
         // Removes the chosen Shapes with a RemoveShapesCommand.
         public void RemoveShape()
         {
@@ -260,6 +263,10 @@ namespace Windows_Programming.ViewModel
             _isRemovingShape = true;
             RaisePropertyChanged("ModeOpacity");
         }
+
+        #endregion
+
+        #region Relations
 
         public void AddAssociation()
         {
@@ -291,17 +298,6 @@ namespace Windows_Programming.ViewModel
             Type = RelationTypes.Composition;
             _isAddingLine = true;
             RaisePropertyChanged("ModeOpacity");
-        }
-
-        // Checks if the chosen Lines can be removed, which they can if at least one is chosen.
-        public bool CanRemoveLines(IList _edges)
-        {
-            return _edges.Count >= 1;
-        }
-
-        public void MouseDownShape(MouseButtonEventArgs e)
-        {
-            if (!_isAddingLine) e.MouseDevice.Target.CaptureMouse();
         }
 
         private void RemoveLineFocus()
@@ -354,9 +350,23 @@ namespace Windows_Programming.ViewModel
             RelationText = (!string.IsNullOrEmpty(SelectedLine.Text)) ? SelectedLine.Text : string.Empty;
         }
 
+        public bool CanAddLine()
+        {
+            return Shapes.Count > 1;
+        }
+
+        #endregion
+
+        #region Mouse events
+
+        public void MouseDownShape(MouseButtonEventArgs e)
+        {
+            if (!_isAddingLine) e.MouseDevice.Target.CaptureMouse();
+        }
+
         // This is used for moving a Shape, and only if the mouse is already captured.
         public void MouseMoveShape(MouseEventArgs e)
-        {                
+        {
             // Checks that the mouse is captured and that a line is not being drawn.
             if (Mouse.Captured == null || _isAddingLine)
                 return;
@@ -388,7 +398,7 @@ namespace Windows_Programming.ViewModel
             // Used for adding a Line.
             if (_isAddingLine)
             {
-                
+
                 if (_addingLineFrom == null) { _addingLineFrom = shape; }
                 else if (_addingLineFrom.Number != shape.Number)
                 {
@@ -424,5 +434,7 @@ namespace Windows_Programming.ViewModel
             dynamic parent = VisualTreeHelper.GetParent(o);
             return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
         }
+
+        #endregion   
     }
 }

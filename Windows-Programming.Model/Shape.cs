@@ -53,7 +53,7 @@ namespace Windows_Programming.Model
             Number = ++counter;
             X = Y = 0;
             Width = 144;
-            Height = 114;
+            Height = 107;
             Methods = new ObservableCollection<ShapeAttribute>();
             Properties = new ObservableCollection<ShapeAttribute>();
         }
