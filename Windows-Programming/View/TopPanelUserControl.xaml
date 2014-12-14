@@ -41,7 +41,7 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Button Margin="3" Width="55" Style="{StaticResource ToolBarButtonBaseStyle}"
                         HorizontalContentAlignment="Center"
-                        Command="{x:Static ApplicationCommands.New}">
+                        Command="{Binding NewCommand}">
                             <Button.Content>
                                 <Grid>
                                     <Grid.RowDefinitions>

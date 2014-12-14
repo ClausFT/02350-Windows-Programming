@@ -57,6 +57,7 @@ namespace Windows_Programming.ViewModel
         public ICommand RedoCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
         public ICommand LoadCommand { get; private set; }
+        public ICommand NewCommand { get; private set; }
 
         // for Interface
 
@@ -91,6 +92,7 @@ namespace Windows_Programming.ViewModel
             RedoCommand = new RelayCommand(Redo, CanRedo);
             SaveCommand = new RelayCommand(Save);
             LoadCommand = new RelayCommand(Load);
+            NewCommand = new RelayCommand(New);
 
             AddClassCommand = new RelayCommand(AddClass);
             RemoveShapeCommand = new RelayCommand(RemoveShape, CanRemoveShape);
@@ -209,6 +211,13 @@ namespace Windows_Programming.ViewModel
             Lines.ToList().ForEach(x => { x.From = Shapes.Single(y => y.Number == x.FromID); x.To = Shapes.Single(y => y.Number == x.ToID); });
             RaisePropertyChanged("Lines");
 
+        }
+        public void New()
+        {
+            Shapes = new ObservableCollection<Shape>();
+            RaisePropertyChanged("Shapes");
+            Lines = new ObservableCollection<Line>();
+            RaisePropertyChanged("Lines");
         }
         // Adds a Class.
         public void AddClass()
