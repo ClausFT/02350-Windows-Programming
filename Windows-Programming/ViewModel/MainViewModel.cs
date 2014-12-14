@@ -111,6 +111,10 @@ namespace Windows_Programming.ViewModel
             AddMethodCommand = new RelayCommand<object>(AddMethod);
         }
 
+        #region Undo/redo controller
+
+
+        #endregion
         public void AddAndExecute(IUndoRedoCommand command)
         {
             undoStack.Push(command);
